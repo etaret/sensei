@@ -1,4 +1,4 @@
-//テスト1
+//テスト2
 package dao;
 
 import java.sql.Connection;
