@@ -56,12 +56,15 @@ public class SubjectDao extends Dao {
 		return subject;
 	}
 
+	// 科目の一覧取得
 	public List<Subject> filter(School school) throws Exception {
+		// 定義
 		List<Subject> list = new ArrayList<>();
 	    Connection connection = getConnection();
 	    PreparedStatement statement = null;
 	    ResultSet set = null;
 	    try {
+	    	// sql処理
 	        statement = connection.prepareStatement("SELECT school_cd, cd, name FROM subject WHERE school_cd = ? ORDER BY cd");
 	        statement.setString(1, school.getCd());
 	        set = statement.executeQuery();
@@ -97,6 +100,7 @@ public class SubjectDao extends Dao {
 	    return list;
 	}
 
+	// 登録、変更処理
 	public boolean save(Subject subject) throws Exception {
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
@@ -104,13 +108,16 @@ public class SubjectDao extends Dao {
 		int count = 0;
 
 		try {
+			// 科目が存在しているかどうかのチェック用データ
 			Subject old = get(subject.getSchool().getCd(), subject.getSchool());
+			// 存在してない場合入力データ登録
 			if (old == null) {
 				statement = connection.prepareStatement(
 						"INSERT INTO subject(school_cd, cd, name) values(?, ?, ?)");
 				statement.setString(1, subject.getSchool().getCd());
 				statement.setString(2, subject.getCd());
 				statement.setString(3, subject.getName());
+			// 存在している場合データの変更登録
 			} else {
 				statement = connection
 						.prepareStatement("UPDATE subject SET name = ? WHERE school_cd = ?, cd = ?");
@@ -146,6 +153,7 @@ public class SubjectDao extends Dao {
 		}
 	}
 
+	// 削除処理
 	public boolean delete(Subject subject) throws Exception {
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
