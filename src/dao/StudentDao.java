@@ -22,7 +22,7 @@ public class StudentDao extends Dao{
 		PreparedStatement statement = null;
 
 		try {
-			statement = connection.prepareStatement("SELECT * FROM student WHERE no = ? ORDER BY = class_num, ent_year asc");
+			statement = connection.prepareStatement("SELECT * FROM student WHERE no = ? ORDER BY class_num, ent_year asc");
 			statement.setString(1, no);
 			ResultSet rSet = statement.executeQuery();
 
