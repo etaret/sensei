@@ -12,4 +12,5 @@
 	<li class="nav-item mb-3"><a href="ClassList.action">クラス管理</a></li>
 	<li>おはよう</li>
 	<li>こんにちは</li>
+	<li>こんばんは</li>
 </ul>
