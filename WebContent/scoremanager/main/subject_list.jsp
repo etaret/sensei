@@ -38,11 +38,6 @@
 								</tr>
 							</c:forEach>
 						</c:when>
-						<c:otherwise>
-							<tr>
-								<td colspan="4">科目情報が存在しませんでした。</td>
-							</tr>
-						</c:otherwise>
 					</c:choose>
 				</tbody>
 			</table>
