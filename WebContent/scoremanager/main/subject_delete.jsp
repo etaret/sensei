@@ -1,25 +1,34 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>科目情報削除</title>
+<c:import url="/common/base.jsp">
 
+    <c:param name="title">得点管理システム</c:param>
 
+    <c:param name="scripts"></c:param>
 
-</head>
-<body>
-    <div class="container">
-        <h2>科目情報削除</h2>
-        <div class="message">
-            「${subjectName} ${subjectcd}」を削除してよろしいですか？
+    <c:param name="content">
+        <h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報削除</h2>
+        <div class="col-11 mx-auto">
+
+            <form action="SubjectDeleteExecute.action" method="post">
+
+                <!-- 削除確認メッセージ -->
+                <div class="mb-4">
+                    <p class="fs-5">「${subject_name}（${subject_cd}）」を削除してよろしいですか？</p>
+                </div>
+
+                <!-- hidden: 削除対象ID -->
+                <input type="hidden" name="subjectId" value="${subjectcd}" />
+
+                <!-- ボタン -->
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-danger">削除</button>
+                    <a href="SubjectList.action" class="btn btn-secondary ms-2">戻る</a>
+                </div>
+
+            </form>
+
         </div>
-        <form action="SubjectDeleteExecute.action" method="post">
-            <input type="hidden" name="subjectId" value="${subjectcd}" />
-            <button type="submit" class="btn-danger">削除</button>
-            <a href="SubjectList.action" class="btn-back">戻る</a>
-        </form>
-    </div>
-</body>
-</html>
+    </c:param>
+
+</c:import>
