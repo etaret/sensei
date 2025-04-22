@@ -109,7 +109,7 @@ public class SubjectDao extends Dao {
 
 		try {
 			// 科目が存在しているかどうかのチェック用データ
-			Subject old = get(subject.getSchool().getCd(), subject.getSchool());
+			Subject old = get(subject.getCd(), subject.getSchool());
 			// 存在してない場合入力データ登録
 			if (old == null) {
 				statement = connection.prepareStatement(
@@ -120,7 +120,7 @@ public class SubjectDao extends Dao {
 			// 存在している場合データの変更登録
 			} else {
 				statement = connection
-						.prepareStatement("UPDATE subject SET name = ? WHERE school_cd = ?, cd = ?");
+						.prepareStatement("UPDATE subject SET name = ? WHERE school_cd = ? AND cd = ?");
 				statement.setString(1, subject.getName());
 				statement.setString(2, subject.getSchool().getCd());
 				statement.setString(3, subject.getCd());

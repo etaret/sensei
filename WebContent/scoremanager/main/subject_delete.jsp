@@ -18,7 +18,7 @@
         <form action="SubjectDeleteExecute.action" method="post">
             <input type="hidden" name="subjectId" value="${subjectcd}" />
             <button type="submit" class="btn-danger">削除</button>
-            <a href="SubjectList" class="btn-back">戻る</a>
+            <a href="SubjectList.action" class="btn-back">戻る</a>
         </form>
     </div>
 </body>
