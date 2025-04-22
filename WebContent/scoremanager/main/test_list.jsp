@@ -58,7 +58,7 @@
 				</form>
 
 				<%-- 区切り線 --%>
-				<hr class="my-3">
+				<hr class="my-3">　
 
 				<%-- ★★★ フォーム 2: 学生番号検索 ★★★ --%>
 				<form method="get">
