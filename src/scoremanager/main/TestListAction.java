@@ -41,7 +41,7 @@ public class TestListAction extends Action {
 		int year = todaysDate.getYear(); // 現在の年
 		Map<String, String> errors = new HashMap<>(); // エラーメッセージ
 
-		// DAOインスタンス化　
+		// DAOインスタンス化
 		ClassNumDao cNumDao = new ClassNumDao();
 		SubjectDao subDao = new SubjectDao();
 		TestDao testDao = new TestDao();

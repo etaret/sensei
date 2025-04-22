@@ -12,7 +12,7 @@
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">成績管理</h2>
 			<div class="border m-3 p-3 rounded">
 				<%-- ★★★ フォーム 1: 科目情報フィルタ ★★★ --%>
-				<form method="get">
+				<form method="get" action="TestListExecute.action">
 					<%-- ★ 見出しを削除 --%>
 					<%-- <h4 class="mb-3">科目情報</h4> --%>
 					<div class="row g-3 align-items-center mb-3"> <%-- align-items-center に変更 --%>
@@ -57,8 +57,11 @@
 					</div>
 				</form>
 
+				<%-- ★ エラーメッセージをここに移動 --%>
+				<div class="mt-3 text-warning">${errors.get("filter")}</div>
+
 				<%-- 区切り線 --%>
-				<hr class="my-3">　
+				<hr class="my-3">
 
 				<%-- ★★★ フォーム 2: 学生番号検索 ★★★ --%>
 				<form method="get">
@@ -78,43 +81,51 @@
 						</div>
 					</div>
 				</form>
-
-				<%-- エラーメッセージ表示 (フォームの外) --%>
-				<div class="mt-3 text-warning">${errors.get("filter")}</div> <%-- エラーキーを汎用的なものに? --%>
 			</div>
 
+			<%-- ★★★ テーブル表示部分 ★★★ --%>
+			<%-- ★ 表示条件を subjectTests に変更 --%>
 			<c:choose>
-				<c:when test="${tests != null && tests.size()>0}">
-					<div>検索結果：<c:out value="${tests.size()}" default="0"/>件</div>
+				<c:when test="${subjectTests != null && subjectTests.size()>0}">
+					<%-- ★ 件数表示も subjectTests を参照 --%>
+					<div>
+						<c:if test="${selectedSubject != null}">
+							検索科目： <c:out value="${selectedSubject.name}"/>
+						</c:if>
+					</div>
 					<table class="table table-hover">
 						<thead>
 							<tr>
+								<%-- ★ ヘッダーを TestListSubject に合わせる --%>
 								<th>入学年度</th>
 								<th>クラス</th>
 								<th>学生番号</th>
 								<th>氏名</th>
-								<th>回数</th>
-								<th>点数</th>
-								<th></th>
+								<th>１回</th>
+								<th>２回</th>
+								<%-- <th></th> --%> <%-- 変更リンクは一旦削除 --%>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="test" items="${tests}">
+							<%-- ★ items と var を変更 --%>
+							<c:forEach var="subjectTest" items="${subjectTests}">
 								<tr>
-									<td>${test.student.entYear}</td>
-									<td>${test.classNum}</td>
-									<td>${test.student.no}</td>
-									<td>${test.student.name}</td>
-									<td>${test.no}</td>
-									<td>${test.point}</td>
-									<td>
-										<a href="TestRegistExecute.action?f4=${test.student.no}&f5=${test.subject.cd}&f6=${test.no}">変更</a>
-									</td>
+									<%-- ★ 表示内容を subjectTest のプロパティに合わせる --%>
+									<td>${subjectTest.entYear}</td>
+									<td>${subjectTest.classNum}</td>
+									<td>${subjectTest.studentNo}</td>
+									<td>${subjectTest.studentName}</td>
+									<td>${subjectTest.points.get(1)}</td> <%-- Mapから1回目の点を取得 --%>
+									<td>${subjectTest.points.get(2)}</td> <%-- Mapから2回目の点を取得 --%>
+									<%-- <td> --%>
+										<%-- <a href="TestRegistExecute.action?...">変更</a> --%> <%-- 変更リンクは一旦削除 --%>
+									<%-- </td> --%>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
 				</c:when>
+				<%-- ★ otherwise を追加 (データが無い場合の表示) --%>
 				<c:otherwise>
 					<div>成績情報が存在しませんでした。</div>
 				</c:otherwise>

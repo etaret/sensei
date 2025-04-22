@@ -19,25 +19,55 @@ public class TestListSubjectDao extends Dao {
 	private List<TestListSubject> postFilter(ResultSet rSet) throws Exception {
 		// list定義
 		List<TestListSubject> list = new ArrayList<>();
+		// studentNoをキー、TestListSubjectを値とするマップを作成（以前のロジックを活用）
+		Map<String, TestListSubject> studentMap = new HashMap<>();
+
 		try{
 			// 渡された値をlistへセット
 			while (rSet.next()){
-				TestListSubject tl_subject = new TestListSubject();
-				tl_subject.setEntYear(rSet.getInt("ent_year"));
-				tl_subject.setStudentNo(rSet.getString("no"));
-				tl_subject.setStudentName(rSet.getString("name"));
-				tl_subject.setClassNum(rSet.getString("class_num"));
+				String studentNo = rSet.getString("no"); // 学生番号
+				TestListSubject tl_subject = studentMap.get(studentNo);
 
-				// mapへの格納処理
-				Map<Integer, Integer> points = new HashMap<>();
-				points.put(1, rSet.getInt("test_1"));
-				points.put(2, rSet.getInt("test_2"));
+				// マップに学生が存在しない場合、新規作成して追加
+				if (tl_subject == null) {
+					tl_subject = new TestListSubject();
+					tl_subject.setEntYear(rSet.getInt("ent_year"));
+					tl_subject.setStudentNo(studentNo);
+					tl_subject.setStudentName(rSet.getString("name"));
+					tl_subject.setClassNum(rSet.getString("class_num"));
 
-				tl_subject.setPoints(points);
+					// pointsマップを初期化 (nullを入れておく)
+					Map<Integer, Integer> points = new HashMap<>();
+					points.put(1, null); // 1回目の点数用
+					points.put(2, null); // 2回目の点数用
+					tl_subject.setPoints(points);
 
-				list.add(tl_subject);
+					studentMap.put(studentNo, tl_subject); // マップに追加
+				}
+
+				// 現在の行からテスト番号(test_no)と点数(point)を取得
+				int testNo = rSet.getInt("test_no");
+				int point = rSet.getInt("point");
+				boolean pointIsNull = rSet.wasNull(); // 点数がSQL NULLかチェック
+
+				// testNoが1か2の場合、対応するキーに点数を設定
+				if (testNo == 1 || testNo == 2) {
+					Map<Integer, Integer> points = tl_subject.getPoints();
+					if (!pointIsNull) {
+						points.put(testNo, point); // testNo (1 or 2) をキーとして点数を設定
+					} else {
+						// SQL NULLの場合はJavaのnullを設定（既に入っているのでそのままでも可）
+						points.put(testNo, null);
+					}
+				}
 			}
-		} catch (SQLException | NullPointerException e){ e.printStackTrace();}
+
+			// マップの値をリストに変換
+			list.addAll(studentMap.values());
+
+		} catch (SQLException | NullPointerException e){
+			e.printStackTrace();
+		}
 		return list;
 	}
 
@@ -49,25 +79,24 @@ public class TestListSubjectDao extends Dao {
 	    PreparedStatement statement = null;
 	    ResultSet set = null;
 	    try {
-	    	// sql文
+	    	// sql文 - TESTテーブルのNOカラムも選択する
 	        statement = connection.prepareStatement(""
-	        		+ "SELECT student.ent_year, student.class_num, "
-	        		+ "student.no, student.name, "
-	        		+ "CASE WHEN test.no = 1 THEN test.point END AS test_1, "
-	        		+ "CASE WHEN test.no = 2 THEN test.point END AS test_2, "
-	        		+ "test.subject_cd "
-	        		+ "FROM test LEFT JOIN student "
-	        		+ "ON student.no = test.student_no AND student.school_cd = test.school_cd "
-	        		+ "AND student.class_num = test.class_num AND test.subject_cd = ? "
-	        		+ "WHERE student.ent_year = ? AND student.class_num = ?"
-	        		+ "GROUP BY student.ent_year, student.class_num, student.no, student.name, test.subject_cd;"
+	        		+ "SELECT s.ent_year, s.class_num, s.no, s.name, "
+	        		+ "t.point, t.subject_cd, t.no AS test_no " // t.noをtest_noとして取得
+	        		+ "FROM student s "
+	        		+ "LEFT JOIN test t ON s.no = t.student_no "
+	        		+ "AND s.school_cd = t.school_cd "
+	        		+ "AND s.class_num = t.class_num "
+	        		+ "AND t.subject_cd = ? " // 結合条件で科目を絞る
+	        		+ "WHERE s.ent_year = ? AND s.class_num = ? "
+	        		+ "ORDER BY s.no, t.no" // 学生番号、テスト番号順でソート
 	        		);
 
 	        statement.setString(1, subject.getCd());
 	        statement.setInt(2, entYear);
 	        statement.setString(3, classNum);
 	        set = statement.executeQuery();
-	        list = postFilter(set);
+	        list = postFilter(set); // postFilterで処理
 
 	    } catch (Exception e) {
 	        throw e;

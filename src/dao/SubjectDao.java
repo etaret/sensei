@@ -20,7 +20,7 @@ public class SubjectDao extends Dao {
 		PreparedStatement statement = null;
 
 		try {
-			statement = connection.prepareStatement("SELECT school_cd, cd, name FROM subject WHERE school_cd = ?, cd = ? ORDER BY cd");
+			statement = connection.prepareStatement("SELECT school_cd, cd, name FROM subject WHERE school_cd = ? AND cd = ? ORDER BY cd");
 			statement.setString(1, school.getCd());
 			statement.setString(2, cd);
 			ResultSet rSet = statement.executeQuery();
