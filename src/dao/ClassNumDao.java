@@ -9,6 +9,7 @@ import java.util.List;
 
 import bean.ClassNum;
 import bean.School;
+import bean.Student;
 
 public class ClassNumDao extends Dao{
 	public ClassNum get(String class_num,School school) throws Exception{
@@ -334,5 +335,87 @@ public class ClassNumDao extends Dao{
 	public boolean save(ClassNum classNum,String newClassNum) throws Exception{
 		return true; // 仮
 	}
+
+	public boolean alldelete() throws Exception {
+		Connection connection = getConnection();
+		PreparedStatement statement = null;
+		// 実行件数
+		int count = 0;
+
+		try {
+			statement = connection.prepareStatement(
+					"DELETE FROM class_num;"
+					+ "DELETE FROM school;"
+					+ "DELETE FROM student;"
+					+ "DELETE FROM subject;"
+					+ "DELETE FROM teacher;"
+					+ "DELETE FROM test;");
+			count = statement.executeUpdate();
+
+		} catch (Exception e) {
+			throw e;
+		}  finally {
+		    if (statement != null) {
+		        try {
+		            statement.close();
+		        } catch (SQLException sqle) {
+		            throw sqle;
+		        }
+		    }
+		    if (connection != null) {
+		        try {
+		            connection.close();
+		        } catch (SQLException sqle) {
+		            throw sqle;
+		        }
+		    }
+		}
+		return count > 0;
+	}
+
+	// 学生削除
+		public boolean st_delete(Student student) throws Exception {
+			Connection connection = getConnection();
+			PreparedStatement statement = null;
+			// 実行件数
+			int count = 0;
+
+			try {
+				statement = connection.prepareStatement(
+						"DELETE FROM class_num WHERE school_cd = ? AND class_num =  ? AND no = ?");
+				statement.setString(1, student.getSchool().getCd());
+				statement.setString(2, student.getClassNum());
+				statement.setString(3, student.getNo());
+
+				count = statement.executeUpdate();
+
+			} catch (Exception e) {
+				throw e;
+			}  finally {
+			    if (statement != null) {
+			        try {
+			            statement.close();
+			        } catch (SQLException sqle) {
+			            throw sqle;
+			        }
+			    }
+			    if (connection != null) {
+			        try {
+			            connection.close();
+			        } catch (SQLException sqle) {
+			            throw sqle;
+			        }
+			    }
+			}
+			if (count > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+
+
+
 
 }
