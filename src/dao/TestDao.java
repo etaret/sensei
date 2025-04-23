@@ -189,11 +189,10 @@ public class TestDao extends Dao {
 	    int count = 0;
 
 	    try {
-	    	Test tt = new Test();
 			// 科目が存在しているかどうかのチェック用データ
-			Test old = get(tt.getStudent(), tt.getSubject(), tt.getSchool(), test.getNo());
+			Test old = get(test.getStudent(), test.getSubject(), test.getSchool(), test.getNo());
 			// 存在してない場合入力データ登録
-			if (old == null) {
+			if (old.getPoint() == 0) {
 				statement = connection.prepareStatement(
 						"INSERT INTO test(student_no, subject_cd, school_cd, no, point, class_num) values(?, ?, ?, ?, ?, ?)");
 				statement.setString(1, test.getStudent().getNo());
@@ -229,6 +228,7 @@ public class TestDao extends Dao {
 		        }
 	        }
 	    }
+
 	    return count > 0; // 更新が成功した場合はtrue
 	}
 }
