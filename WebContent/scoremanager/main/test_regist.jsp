@@ -57,7 +57,7 @@
 
 				<div class="mt-3 text-warning">${errors.get("filter")}</div>
                 
-                <%-- === 科目検索結果の表示 === --%>
+                <%--
 				<c:when test="${resultType == 'subject'}">
 					<c:choose>
 						<c:when test="${subjectTests != null && subjectTests.size()>0}">
@@ -84,7 +84,6 @@
 											<td>${subjectTest.classNum}</td>
 											<td>${subjectTest.studentNo}</td>
 											<td>${subjectTest.studentName}</td>
-											<%-- スクリプトレットによる点数表示 --%>
 											<%
 											  bean.TestListSubject currentTest = (bean.TestListSubject) pageContext.getAttribute("subjectTest");
 											  if (currentTest != null && currentTest.getPoints() != null) {
@@ -106,6 +105,7 @@
 						</c:otherwise>
 					</c:choose>
 				</c:when>
+				--%>
 
 			</div>
 		</section>
