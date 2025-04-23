@@ -11,16 +11,11 @@
 		<section class="m-4">
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">成績管理</h2>
 			<div class="border m-3 p-3 rounded">
-				<%-- ★★★ フォーム 1: 科目情報フィルタ ★★★ --%>
-				<form method="get" action="TestListExecute.action">
-					<%-- ★ 見出しを削除 --%>
-					<%-- <h4 class="mb-3">科目情報</h4> --%>
+				<form method="get" action="TestListSubjectExecute.action">
 					<div class="row g-3 align-items-center mb-3"> <%-- align-items-center に変更 --%>
-						<%-- 見出し列 (col-md-2) --%>
 						<div class="col-md-2 d-flex align-items-center">
 							<p class="mb-0">科目情報</p>
 						</div>
-						<%-- 入学年度 (col-md-2) --%>
 						<div class="col-md-2">
 							<label class="form-label" for="filter-f1-select">入学年度</label>
 							<select class="form-select" id="filter-f1-select" name="f1">
@@ -30,7 +25,6 @@
 								</c:forEach>
 							</select>
 						</div>
-						<%-- クラス (col-md-2) --%>
 						<div class="col-md-2">
 							<label class="form-label" for="filter-f2-select">クラス</label>
 							<select class="form-select" id="filter-f2-select" name="f2">
@@ -40,7 +34,6 @@
 								</c:forEach>
 							</select>
 						</div>
-						<%-- 科目 (col-md-3) --%>
 						<div class="col-md-3">
 							<label class="form-label" for="filter-f3-select">科目</label>
 							<select class="form-select" id="filter-f3-select" name="f3">
@@ -50,32 +43,25 @@
 								</c:forEach>
 							</select>
 						</div>
-						<%-- 検索ボタン (col-md-3) --%>
 						<div class="col-md-3 d-flex align-items-end justify-content-center">
 							<button class="btn btn-secondary" id="filter-button-subject">検索</button>
 						</div>
 					</div>
 				</form>
 
-				<%-- ★ エラーメッセージをここに移動 --%>
 				<div class="mt-3 text-warning">${errors.get("filter")}</div>
 
-				<%-- 区切り線 --%>
 				<hr class="my-3">
 
-				<%-- ★★★ フォーム 2: 学生番号検索 ★★★ --%>
-				<form method="get">
-					<div class="row g-3 align-items-center"> <%-- align-items-center に変更 --%>
-						<%-- ラベル列 (col-md-2) --%>
+				<form method="get" action="TestListStudentExecute.action">
+					<div class="row g-3 align-items-center">
 						<div class="col-md-2 d-flex align-items-center">
-							<%-- ★ ラベルを入力欄の左に移動 --%>
-							<label class="mb-0">学生情報</label> <%-- 太字に --%>
+							<label class="mb-0">学生情報</label>
 						</div>
 						<div class="col-md-6">
 							<label class="form-label" for="filter-f4-input">学生番号</label>
 							<input type="text" id="filter-f4-input" name="f4" class="form-control" value="${f4}" placeholder="学生番号を入力してください">
 						</div>
-						<%-- 検索ボタン (col-md-4) --%>
 						<div class="col-md-4 d-flex align-items-center justify-content-center">
 							<button class="btn btn-secondary" id="filter-button-student">検索</button>
 						</div>
@@ -83,51 +69,100 @@
 				</form>
 			</div>
 
-			<%-- ★★★ テーブル表示部分 ★★★ --%>
-			<%-- ★ 表示条件を subjectTests に変更 --%>
+			<%-- ===== 結果表示エリア ===== --%>
 			<c:choose>
-				<c:when test="${subjectTests != null && subjectTests.size()>0}">
-					<%-- ★ 件数表示も subjectTests を参照 --%>
-					<div>
-						<c:if test="${selectedSubject != null}">
-							検索科目： <c:out value="${selectedSubject.name}"/>
-						</c:if>
-					</div>
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<%-- ★ ヘッダーを TestListSubject に合わせる --%>
-								<th>入学年度</th>
-								<th>クラス</th>
-								<th>学生番号</th>
-								<th>氏名</th>
-								<th>１回</th>
-								<th>２回</th>
-								<%-- <th></th> --%> <%-- 変更リンクは一旦削除 --%>
-							</tr>
-						</thead>
-						<tbody>
-							<%-- ★ items と var を変更 --%>
-							<c:forEach var="subjectTest" items="${subjectTests}">
-								<tr>
-									<%-- ★ 表示内容を subjectTest のプロパティに合わせる --%>
-									<td>${subjectTest.entYear}</td>
-									<td>${subjectTest.classNum}</td>
-									<td>${subjectTest.studentNo}</td>
-									<td>${subjectTest.studentName}</td>
-									<td>${subjectTest.points.get(1)}</td> <%-- Mapから1回目の点を取得 --%>
-									<td>${subjectTest.points.get(2)}</td> <%-- Mapから2回目の点を取得 --%>
-									<%-- <td> --%>
-										<%-- <a href="TestRegistExecute.action?...">変更</a> --%> <%-- 変更リンクは一旦削除 --%>
-									<%-- </td> --%>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
+				<%-- === 科目検索結果の表示 === --%>
+				<c:when test="${resultType == 'subject'}">
+					<c:choose>
+						<c:when test="${subjectTests != null && subjectTests.size()>0}">
+							<div>
+								<c:if test="${selectedSubject != null}">
+									検索科目： <c:out value="${selectedSubject.name}"/>
+								</c:if>
+							</div>
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>入学年度</th>
+										<th>クラス</th>
+										<th>学生番号</th>
+										<th>氏名</th>
+										<th>１回</th>
+										<th>２回</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="subjectTest" items="${subjectTests}">
+										<tr>
+											<td>${subjectTest.entYear}</td>
+											<td>${subjectTest.classNum}</td>
+											<td>${subjectTest.studentNo}</td>
+											<td>${subjectTest.studentName}</td>
+											<%-- スクリプトレットによる点数表示 --%>
+											<%
+											  bean.TestListSubject currentTest = (bean.TestListSubject) pageContext.getAttribute("subjectTest");
+											  if (currentTest != null && currentTest.getPoints() != null) {
+											    Integer point1 = currentTest.getPoints().get(1);
+											    Integer point2 = currentTest.getPoints().get(2);
+											    out.print("<td>" + (point1 != null && point1 != 0 ? point1 : "-") + "</td>");
+											    out.print("<td>" + (point2 != null && point2 != 0 ? point2 : "-") + "</td>");
+											  } else {
+											    out.print("<td>Error</td><td>Error</td>");
+											  }
+											%>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</c:when>
+						<c:otherwise>
+							<div>成績情報が存在しませんでした。</div>
+						</c:otherwise>
+					</c:choose>
 				</c:when>
-				<%-- ★ otherwise を追加 (データが無い場合の表示) --%>
+
+				<c:when test="${resultType == 'student'}">
+					<div class="mt-3 text-warning">${errors.get("student_search")}</div>
+
+					<c:if test="${selectedStudent != null}">
+
+						<div class="">
+							氏名： ${selectedStudent.name}(${selectedStudent.no})
+						</div>
+
+						<%-- 成績一覧表示 --%>
+						<c:choose>
+							<c:when test="${studentTests != null && studentTests.size()>0}">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>科目名</th>
+											<th>科目コード</th>
+											<th>回数</th>
+											<th>点数</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="test" items="${studentTests}">
+											<tr>
+												<td>${test.subjectName}</td>
+												<td>${test.subjectCd}</td>
+												<td>${test.num}</td>
+												<td><c:out value="${test.point != null && test.point != 0 ? test.point : '-'}" /></td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</c:when>
+							<c:otherwise>
+								<div>成績情報が存在しませんでした。</div>
+							</c:otherwise>
+						</c:choose>
+					</c:if>
+				</c:when>
+
 				<c:otherwise>
-					<div>成績情報が存在しませんでした。</div>
+					<div>検索条件を指定してください。</div>
 				</c:otherwise>
 			</c:choose>
 		</section>
