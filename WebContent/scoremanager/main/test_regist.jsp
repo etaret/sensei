@@ -7,56 +7,57 @@
 
     <c:param name="scripts"></c:param>
 
-    <c:param name="content">
-        <section class="m-4">
-            <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績管理</h2>
+    	<c:param name="content">
+		<section class="m-5">
+			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">成績管理</h2>
+			<div class="border m-3 p-3 rounded">
+				<form method="get" action="TestRegistExecute.action">
+					<div class="row g-3 align-items-center mb-3"> <%-- align-items-center に変更 --%>
+						<div class="col-md-2">
+							<label class="form-label" for="filter-f1-select">入学年度</label>
+							<select class="form-select" id="filter-f1-select" name="f1">
+								<option value="0">--------</option>
+								<c:forEach var="year" items="${ent_year_set}">
+									<option value="${year}" <c:if test="${year==f1}">selected</c:if>>${year}</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="col-md-2">
+							<label class="form-label" for="filter-f2-select">クラス</label>
+							<select class="form-select" id="filter-f2-select" name="f2">
+								<option value="0">--------</option>
+								<c:forEach var="num" items="${class_num_set}">
+									<option value="${num}" <c:if test="${num==f2}">selected</c:if>>${num}</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="col-md-3">
+							<label class="form-label" for="filter-f3-select">科目</label>
+							<select class="form-select" id="filter-f3-select" name="f3">
+								<option value="0">--------</option>
+								<c:forEach var="subject" items="${subject_set}">
+									<option value="${subject.cd}" <c:if test="${subject.cd==f3}">selected</c:if>>${subject.name}</option>
+								</c:forEach>
+							</select>
+						</div>
+                        <div class="col-md-2">
+							<label class="form-label" for="filter-f3-select">回数</label>
+							<select class="form-select" id="filter-f3-select" name="f3">
+								<option value="0">--------</option>
+								<c:forEach var="testNo" items="${test_no_set}">
+									<option value="${testNo}" <c:if test="${testNo==f3}">selected</c:if>>${testNo}</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="col-md-2 d-flex align-items-end justify-content-center">
+							<button class="btn btn-secondary" id="filter-button-subject">検索</button>
+						</div>
+					</div>
+				</form>
 
-            <!-- 選択された科目と回数の表示 -->
-            <div class="mb-3">
-                <strong>科目：</strong>${subject.name}（${testNo}回）
-            </div>
+				<div class="mt-3 text-warning">${errors.get("filter")}</div>
 
-            <!-- 成績入力フォーム -->
-            <form action="TestRegistExecute.action" method="post">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>入学年度</th>
-                            <th>クラス</th>
-                            <th>学生番号</th>
-                            <th>氏名</th>
-                            <th>点数</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="student" items="${studentList}" varStatus="status">
-                            <tr>
-                                <td>${student.entYear}</td>
-                                <td>${student.classNum}</td>
-                                <td>
-                                    ${student.no}
-                                    <input type="hidden" name="students[${status.index}].no" value="${student.no}" />
-                                </td>
-                                <td>${student.name}</td>
-                                <td>
-                                    <input type="number" name="students[${status.index}].point"
-                                           class="form-control" value="${student.point}" min="0" max="100" />
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-
-                <!-- 隠しパラメータ -->
-                <input type="hidden" name="subjectCd" value="${subject.cd}" />
-                <input type="hidden" name="testNo" value="${testNo}" />
-
-                <!-- 登録ボタン -->
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-primary">登録して終了</button>
-                </div>
-            </form>
-        </section>
-    </c:param>
-
+			</div>
+		</section>
+	</c:param>
 </c:import>
