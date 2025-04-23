@@ -1,0 +1,13 @@
+{
+    "files.exclude": {
+        "**/.ruby-lsp": true,
+        ".settings": true,
+        ".vscode": true,
+        "build\\classes": true,
+        "build": true,
+        ".classpath": true,
+        ".gitignore": true,
+        ".project": true,
+        "WebContent\\META-INF": true
+    }
+}
