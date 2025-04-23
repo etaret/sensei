@@ -14,7 +14,7 @@
 
                 <!-- 削除確認メッセージ -->
                 <div class="mb-4">
-                    <p class="fs-5">「${subject_name}（${subject_cd}）」を削除してよろしいですか？</p>
+                    <p class="fs-5">「${subjectName}（${subjectcd}）」を削除してよろしいですか？</p>
                 </div>
 
                 <!-- hidden: 削除対象ID -->
