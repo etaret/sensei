@@ -11,17 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bean.ClassNum;
 import bean.Subject;
 import bean.Teacher;
-import bean.Test;
 import bean.TestListSubject;
 import dao.ClassNumDao;
 import dao.SubjectDao;
 import dao.TestListSubjectDao;
 import tool.Action;
 
-public class TestListExecuteAction extends Action {
+public class TestListStudentExecuseAction extends Action {
 
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
