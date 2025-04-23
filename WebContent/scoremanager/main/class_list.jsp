@@ -24,13 +24,20 @@
 						</tr>
 						<c:forEach var="clazz" items="${classes}">
 							<tr>
-								<td>${clazz.class_num}</td>
+								<td>
+									<a href="ClassStudentList.action?class_num=${clazz.class_num}"
+									     class="text-decoration-none text-dark">
+									     ${clazz.class_num}
+									</a>
+								</td>
 								<td>${clazz.c_count }</td>
 								<td>
-								<a href="ClassUpdate.action?class_num=${clazz.class_num}&c_count=${clazz.c_count}">変更</a>
-								<%-- 削除確認付き --%>
-								<a href="ClassDelete.action?class_num=${clazz.class_num}&c_count=${clazz.c_count}"
-   								onclick="return confirm('本当に削除してもよろしいですか？');">削除</a>
+									<a href="ClassUpdate.action?class_num=${clazz.class_num}&c_count=${clazz.c_count}">変更</a>
+								</td>
+								<td>
+									<%-- 削除確認付き --%>
+									<a href="ClassDelete.action?class_num=${clazz.class_num}&c_count=${clazz.c_count}"
+									onclick="return confirm('本当に削除してもよろしいですか？');">削除</a>
 								</td>
 							</tr>
 						</c:forEach>

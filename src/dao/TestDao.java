@@ -183,23 +183,43 @@ public class TestDao extends Dao {
 		return count > 0;
 	}
 
-	//
+	// 変更、登録処理
 	private boolean save(Test test, Connection connection) throws SQLException {
 		PreparedStatement statement = null;
 	    int count = 0;
 
 	    try {
-            // 更新
-            statement = connection.prepareStatement(
-                    "UPDATE test SET point = ? WHERE student_no = ? subject_cd = ?, no = ?");
-            statement.setInt(1, test.getPoint());
-            statement.setString(2, test.getStudent().getNo());
-            statement.setString(3, test.getSubject().getCd());
-            statement.setInt(4, test.getNo());
-	        // SQL実行
+	    	Test tt = new Test();
+			// 科目が存在しているかどうかのチェック用データ
+			Test old = get(tt.getStudent(), tt.getSubject(), tt.getSchool(), test.getNo());
+			// 存在してない場合入力データ登録
+			if (old == null) {
+				statement = connection.prepareStatement(
+						"INSERT INTO test(student_no, subject_cd, school_cd, no, point, class_num) values(?, ?, ?, ?, ?, ?)");
+				statement.setString(1, test.getStudent().getNo());
+				statement.setString(2, test.getSubject().getCd());
+				statement.setString(3, test.getSchool().getCd());
+				statement.setInt(4, test.getNo());
+				statement.setInt(5, test.getPoint());
+				statement.setString(6, test.getClassNum());
+			// 存在している場合データの変更登録
+			} else {
+				// 更新
+	            statement = connection.prepareStatement(
+	                    "UPDATE test SET point = ? WHERE student_no = ? subject_cd = ?, no = ?");
+	            statement.setInt(1, test.getPoint());
+	            statement.setString(2, test.getStudent().getNo());
+	            statement.setString(3, test.getSubject().getCd());
+	            statement.setInt(4, test.getNo());
+			}
+			// SQL実行
 	        count = statement.executeUpdate();
 	    } catch (Exception e){
-	    	throw e;
+	    	try {
+				throw e;
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 	    } finally {
 	        if (statement != null) {
 	        	try {
@@ -209,7 +229,6 @@ public class TestDao extends Dao {
 		        }
 	        }
 	    }
-
 	    return count > 0; // 更新が成功した場合はtrue
 	}
 }
