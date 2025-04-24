@@ -4,7 +4,6 @@ package scoremanager.main;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.ClassNumDao;
 import tool.Action;
 
 public class AllDeleteAction extends Action {
@@ -14,7 +13,6 @@ public class AllDeleteAction extends Action {
 
     	// 変数初期化
     	String deletecheck = "delete";
-    	ClassNumDao cNumDao = new ClassNumDao();
 
         // 値取得
         String deletecode = req.getParameter("delete");
