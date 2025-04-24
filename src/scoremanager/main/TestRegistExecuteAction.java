@@ -1,8 +1,7 @@
 package scoremanager.main;
 
-import java.util.Enumeration;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,6 +45,13 @@ public class TestRegistExecuteAction extends Action {
                 // 数値に変換 (エラーハンドリングなし)
                 int testNo = Integer.parseInt(testNoStr);
                 int point = Integer.parseInt(pointStr); // 空文字や数値以外だと例外発生
+
+                //パラメータ取得時のエラー表示
+                if (point > 0 || point >= 101) {
+                	req.setAttribute("status", "error");
+
+                }
+                req.setAttribute("status", "success");
 
                 // Testオブジェクト生成
                 Test test = new Test();
