@@ -49,6 +49,15 @@ public class SubjectCreateExecuteAction extends Action {
             return;
         }
 
+        // 科目コードの文字数チェック（3文字固定）
+        if (subject_cd.length() != 3) {
+            req.setAttribute("sderror", "科目コードは3文字で入力してください。");
+            req.setAttribute("f1", subject_cd);
+            req.setAttribute("f2", subject_name);
+            req.getRequestDispatcher("subject_create.jsp").forward(req, res);
+            return;
+        }
+
         // 既存科目チェック
         try {
             existingSubject = subjectDao.get(subject_cd, teacher.getSchool());
@@ -60,7 +69,7 @@ public class SubjectCreateExecuteAction extends Action {
 
         // 重複チェック
         if (existingSubject != null) {
-            error = "科目コードがすでに存在します。";
+            error = "科目コードが重複しています。";
             req.setAttribute("sderror", error);
         }
 

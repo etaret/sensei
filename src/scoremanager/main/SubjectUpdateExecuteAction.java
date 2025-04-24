@@ -22,14 +22,7 @@ public class SubjectUpdateExecuteAction extends Action {
         String subject_cd = req.getParameter("cd");
         String subject_name = req.getParameter("name");
 
-        // エラーチェック
-        if (subject_cd == null || subject_cd.isEmpty() || subject_name == null || subject_name.isEmpty()) {
-            req.setAttribute("sderror", "科目コードまたは科目名が入力されていません。");
-            req.getRequestDispatcher("subject_update.jsp").forward(req, res);
-            return;
-        }
-
-        // 科目情報の取得と更新
+        // 科目情報の取得
         SubjectDao subjectDao = new SubjectDao();
         Subject subject = subjectDao.get(subject_cd, teacher.getSchool());
 
@@ -43,10 +36,18 @@ public class SubjectUpdateExecuteAction extends Action {
         subject.setName(subject_name);
         boolean result = subjectDao.save(subject);
 
-        if (result) {
-            req.setAttribute("suc", "更新が完了しました。");
+        if (!result) {
+            // 更新失敗時にもう一度取得して削除されたかを確認
+            Subject checkSubject = subjectDao.get(subject_cd, teacher.getSchool());
+            if (checkSubject == null) {
+                req.setAttribute("sderror", "科目が存在していません。");
+                req.getRequestDispatcher("subject_update.jsp").forward(req, res);
+                return;
+            } else {
+                req.setAttribute("suc", "変更に失敗しました。");
+            }
         } else {
-            req.setAttribute("suc", "更新に失敗しました。内容確認の上もう一度お願いします。");
+            req.setAttribute("suc", "変更が完了しました。");
         }
 
         req.getRequestDispatcher("subject_update_done.jsp").forward(req, res);

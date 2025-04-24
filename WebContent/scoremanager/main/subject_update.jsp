@@ -8,7 +8,7 @@
 	<c:param name="scripts"></c:param>
 
 	<c:param name="content">
-		<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">クラス情報変更</h2>
+		<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報変更</h2>
 		<div class="col-11 mx-auto">
 			<form action="SubjectUpdateExecute.action" method="get">
 

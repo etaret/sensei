@@ -19,7 +19,7 @@
 
             <!-- 戻るボタン -->
             <div class="mt-3">
-                <a href="SubjectList.action" class="btn btn-secondary">一覧に戻る</a>
+                <a href="SubjectList.action" class="btn btn-secondary">科目一覧</a>
             </div>
         </div>
     </c:param>
