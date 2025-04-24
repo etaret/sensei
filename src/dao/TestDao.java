@@ -214,7 +214,6 @@ public class TestDao extends Dao {
 	            statement.setString(3, test.getSubject().getCd());
 	            statement.setInt(4, test.getNo());
 			}
-			System.out.println(old.getPoint());
 			// SQL実行
 	        count = statement.executeUpdate();
 	    } catch (Exception e){
