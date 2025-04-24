@@ -8,7 +8,7 @@
 	<c:param name="scripts"></c:param>
 
 	<c:param name="content">
-		<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">クラス情報変更</h2>
+		<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報変更</h2>
 		<div class="col-11 mx-auto">
 			<form action="SubjectUpdateExecute.action" method="get">
 
@@ -16,9 +16,10 @@
 				<%-- クラス番号入力ボックス --%>
 				<div class="col-12 mb-3">
 					<label>科目コード</label>
-					<div>
-
-						<input type="text" name="cd" value="${cd}" placeholder="選択された科目の科目コード" readonly />
+					<div class="">
+						<input class="form-control  border-0" id=""
+							name="cd" type="text"
+							value="${cd}" readonly />
 					</div>
 
 					<label>科目名</label>
