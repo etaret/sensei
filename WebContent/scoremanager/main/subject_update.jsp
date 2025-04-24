@@ -3,48 +3,45 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="/common/base.jsp">
 
-    <c:param name="title">得点管理システム</c:param>
+	<c:param name="title">得点管理システム</c:param>
 
-    <c:param name="scripts"></c:param>
+	<c:param name="scripts"></c:param>
 
-    <c:param name="content">
-        <h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報更新</h2>
-        <div class="col-11 mx-auto">
-            <form action="SubjectUpdate.action" method="post">
+	<c:param name="content">
+		<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">クラス情報変更</h2>
+		<div class="col-11 mx-auto">
+			<form action="SubjectUpdateExecute.action" method="get">
 
-                <!-- 科目コード（変更不可） -->
-                <div class="col-12 mb-3">
-                    <label class="form-label">科目コード</label>
-                    <div>
-                        <input class="form-control"
-                            maxlength="10" name="subject_cd" type="text"
-                            value="${param.subject_cd != null ? param.subject_cd : f1}" readonly />
-                    </div>
-                </div>
 
-                <!-- 科目名 -->
-                <div class="col-12 mb-3">
-                    <label class="form-label">科目名</label>
-                    <div>
-                        <input class="form-control"
-                            maxlength="100" name="subject_name" type="text"
-                            value="${param.subject_name != null ? param.subject_name : f2}" required />
-                    </div>
-                </div>
+				<%-- クラス番号入力ボックス --%>
+				<div class="col-12 mb-3">
+					<label>科目コード</label>
+					<div>
 
-                <!-- エラー表示 -->
-                <c:if test="${not empty sderror}">
-                    <p class="mt-2 fw-bold text-warning">${sderror}</p>
-                </c:if>
+						<input type="text" name="cd" value="${cd}" placeholder="選択された科目の科目コード" readonly />
+					</div>
 
-                <!-- ボタン -->
-                <div class="mt-3">
-                    <button type="submit" class="btn btn-primary">確認</button>
-                    <a href="SubjectList.action" class="btn btn-secondary ms-2">戻る</a>
-                </div>
+					<label>科目名</label>
+					<div>
+						<input class="form-control" value = "${name }"
+							maxlength="20" name="name" placeholder="選択された科目の科目名"
+							type="text" required />
+						<input type="hidden" name="old_class_num" value="${old_class_num}" />
+					</div>
 
-            </form>
-        </div>
-    </c:param>
 
+				</div>
+				<%--- 登録終了ボタン --%>
+				<div class="col-12 mb-3">
+					<input type = "submit" value = "変更">
+				</div>
+			</form>
+			<div class="col-12 mb-3">
+				<a href="SubjectList.action">戻る</a>
+			</div>
+		</div>
+
+
+
+	</c:param>
 </c:import>
