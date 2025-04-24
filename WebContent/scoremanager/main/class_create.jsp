@@ -35,6 +35,10 @@
 						<p class="mt-2 fw-bold text-warning">${cderror}</p>
 					</c:if>
 				</div>
+				<%--- 登録終了ボタン --%>
+				<div class="col-12 mb-3">
+					<button class="btn btn-primary" id="filter-button" name="end">新規登録</button>
+				</div>
 			</form>
 			<div class="col-12 mb-3">
 				<a href="ClassList.action">戻る</a>

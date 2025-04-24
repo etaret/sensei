@@ -10,38 +10,68 @@
 	<c:param name="content">
 		<section class="m-4">
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">クラス管理</h2>
-			<div class="my-2 text-end px-4">
-				<a href="ClassCreate.action">新規登録</a>
-			</div>
 			<c:choose>
 				<c:when test="${classes.size()>0}">
-					<div>表示数：${classes.size()}件</div>
-					<table class="table table-hover">
-						<tr>
-							<th>クラス番号</th>
-							<th>在籍数</th>
-							<th></th>
-						</tr>
-						<c:forEach var="clazz" items="${classes}">
+					<form method="post">
+						<div class="my-2 text-end px-4">
+							<!-- 新規登録ボタン -->
+							<input type="button"
+							       value="新規登録"
+							       class="btn btn-outline-primary"
+							       onclick="window.location.href='ClassCreate.action'" />
+
+							<!-- 一括更新ボタン -->
+							<input type="submit"
+							       formaction="ClassBatchUpdate.action"
+							       value="一括更新"
+							       class="btn btn-outline-warning" />
+
+							<!-- 一括削除ボタン -->
+							<input type="submit"
+							       formaction="ClassBatchDelete.action"
+							       value="一括削除"
+							       onclick="return confirm('本当に削除してもよろしいですか？');"
+							       class="btn btn-outline-danger" />
+						</div>
+
+						<div>表示数：${classes.size()}件</div>
+						<table class="table table-hover">
 							<tr>
-								<td>
-									<a href="ClassStudentList.action?class_num=${clazz.class_num}"
-									     class="text-decoration-none text-dark">
-									     ${clazz.class_num}
-									</a>
-								</td>
-								<td>${clazz.c_count }</td>
-								<td>
-									<a href="ClassUpdate.action?class_num=${clazz.class_num}&c_count=${clazz.c_count}">変更</a>
-								</td>
-								<td>
-									<%-- 削除確認付き --%>
-									<a href="ClassDelete.action?class_num=${clazz.class_num}&c_count=${clazz.c_count}"
-									onclick="return confirm('本当に削除してもよろしいですか？');">削除</a>
-								</td>
+								<th></th>
+								<th>クラス番号</th>
+								<th>在籍数</th>
+								<th></th>
+								<th></th>
 							</tr>
-						</c:forEach>
-					</table>
+							<c:forEach var="clazz" items="${classes}">
+								<tr>
+									<td>
+										<input type="checkbox" name="selectedClasses" value="${clazz.class_num}" />
+									</td>
+									<td>
+										<a href="ClassStudentList.action?class_num=${clazz.class_num}"
+										     class="text-decoration-none text-dark">
+										     ${clazz.class_num}
+										</a>
+									</td>
+									<td>${clazz.c_count }</td>
+									<td>
+									    <a href="ClassUpdate.action?class_num=${clazz.class_num}&c_count=${clazz.c_count}"
+									       class="btn btn-outline-warning btn-sm">更新</a>
+									</td>
+									<td>
+									    <a href="ClassDelete.action?class_num=${clazz.class_num}&c_count=${clazz.c_count}"
+									       onclick="return confirm('本当に削除してもよろしいですか？');"
+									       class="btn btn-outline-danger btn-sm">削除</a>
+									</td>
+								</tr>
+							</c:forEach>
+						</table>
+						<div class="my-2 text-end px-4">
+							<!-- メニューへ戻るボタン -->
+							<button type="button" class="btn btn-outline-secondary" onclick="window.location.href='Menu.action'">メニューへ戻る</button>
+						</div>
+					</form>
 				</c:when>
 			</c:choose>
 		</section>
