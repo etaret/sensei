@@ -16,9 +16,10 @@
 				<%-- クラス番号入力ボックス --%>
 				<div class="col-12 mb-3">
 					<label>科目コード</label>
-					<div>
-
-						<input type="text" name="cd" value="${cd}" placeholder="選択された科目の科目コード" readonly />
+					<div class="">
+						<input class="form-control  border-0" id=""
+							name="cd" type="text"
+							value="${cd}" readonly />
 					</div>
 
 					<label>科目名</label>
