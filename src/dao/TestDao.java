@@ -21,22 +21,23 @@ public class TestDao extends Dao {
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
 	    ResultSet rSet = null;
-
 		try {
-			statement = connection.prepareStatement("SELECT student.ent_year, student.class_num, "
-					+ "student.no, student.name, test.point, test.subject_cd, test.school_cd "
-					+ "FROM student LEFT JOIN test "
-					+ "ON student.no = test.student_no AND student.school_cd = test.school_cd "
-					+ "AND student.class_num = test.class_num AND test.subject_cd = ? "
-					+ "AND test.no = ? "
-					+ "WHERE student.class_num = ? AND test.school_cd = ? AND test.student_no = ? "
-					+ "GROUP BY student.ent_year, student.class_num, student.no, student.name, test.subject_cd, test.school_cd;");
-
+			statement = connection.prepareStatement(
+				    "SELECT student.ent_year, student.class_num, " +
+				    "student.no, student.name, test.point, test.subject_cd, test.school_cd " +
+				    "FROM student LEFT JOIN test " +
+				    "ON student.no = test.student_no AND student.school_cd = test.school_cd " +
+				    "AND student.class_num = test.class_num " +
+				    "AND test.subject_cd = ? " +
+				    "AND test.no = ? " +
+				    "WHERE test.school_cd = ? " +
+				    "AND test.student_no = ? " +
+				    "ORDER BY student.ent_year, student.class_num, student.no, student.name, test.subject_cd, test.school_cd;"
+				);
 			statement.setString(1, subject.getCd());
 			statement.setInt(2, no);
-			statement.setString(3, student.getClassNum());
-			statement.setString(4, school.getCd());
-			statement.setString(5, student.getNo());
+			statement.setString(3, school.getCd());
+			statement.setString(4, student.getNo());
 	        rSet = statement.executeQuery();
 
 			if (rSet.next()) {
