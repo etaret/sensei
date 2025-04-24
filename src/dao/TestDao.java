@@ -130,9 +130,9 @@ public class TestDao extends Dao {
 	    		);
 			statement.setString(1, subject.getCd());
 			statement.setInt(2, num);
-			statement.setInt(3, entYear);
-			statement.setString(4, classNum);
-			statement.setString(5, school.getCd());
+			statement.setString(3, school.getCd());
+			statement.setInt(4, entYear);
+			statement.setString(5, classNum);
 	        set = statement.executeQuery();
 	        list = postFilter(set);
 
