@@ -19,8 +19,8 @@ public class SubjectUpdateExecuteAction extends Action {
         Teacher teacher = (Teacher) session.getAttribute("user");
 
         // パラメータの取得
-        String subject_cd = req.getParameter("subject_cd");
-        String subject_name = req.getParameter("subject_name");
+        String subject_cd = req.getParameter("cd");
+        String subject_name = req.getParameter("name");
 
         // エラーチェック
         if (subject_cd == null || subject_cd.isEmpty() || subject_name == null || subject_name.isEmpty()) {

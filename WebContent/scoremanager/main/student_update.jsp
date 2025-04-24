@@ -10,6 +10,10 @@
 	<c:param name="content">
 		<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">学生情報変更</h2>
 		<div class="col-11 mx-auto">
+            <!-- エラーメッセージの表示 -->
+            <c:if test="${not empty error}">
+                <p class="text-danger">${error}</p>
+            </c:if>
 			<form action="StudentUpdateExecute.action" method="get">
 				<div class="col-12 mb-3">
 					<label class="form-label">入学年度</label>
@@ -25,7 +29,7 @@
 					<label>学生番号</label>
 					<div class="">
 						<input class="form-control  border-0" id=""
-							name="no"type="text"
+							name="no" type="text"
 							value="${students.no}" readonly />
 					</div>
 				</div>
@@ -35,7 +39,7 @@
 					<div class="">
 						<input class="form-control" id=""
 							maxlength="30" name="name"
-							type="text" value="${students.name}" required />
+							type="text" value="${students.name}" required pattern="[\p{L} ]+" title="氏名を正しく入力してください" />
 					</div>
 				</div>
 				<%-- クラスセレクトボックス --%>
