@@ -1,3 +1,4 @@
+
 package scoremanager.main;
 
 import java.util.List;
@@ -54,6 +55,6 @@ public class TestRegistExecuteAction extends Action {
         List<Test> tests = tDao.filter(entYear, classNum, subject, num, school);
         System.out.print(tests);
 
-        req.getRequestDispatcher("menu.jsp").forward(req, res);
+        req.getRequestDispatcher("test_regist_done.jsp").forward(req, res);
     }
 }

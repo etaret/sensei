@@ -2,19 +2,15 @@ package scoremanager.main;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bean.Student;
 import bean.Subject;
 import bean.Teacher;
 import dao.ClassNumDao;
-import dao.StudentDao;
 import dao.SubjectDao;
 import tool.Action;
 
@@ -50,7 +46,7 @@ public class TestRegistAction extends Action {
 		// テスト回数リストの設定 (固定値)
 		testNoList.add(1);
 		testNoList.add(2);
-		
+
 		System.out.println(entYearSet);
 		System.out.println(classNumList);
 		System.out.println(subjectList);
