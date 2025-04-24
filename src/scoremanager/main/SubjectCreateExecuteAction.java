@@ -1,4 +1,3 @@
-// 入力内容判定、db登録
 package scoremanager.main;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +15,7 @@ public class SubjectCreateExecuteAction extends Action {
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
         // 変数定義
-        String subject_cd, subject_name, error = null;
+        String subject_cd, subject_name;
         boolean result;
 
         // セッションの存在確認
@@ -40,25 +39,35 @@ public class SubjectCreateExecuteAction extends Action {
         SubjectDao subjectDao = new SubjectDao();
         Subject existingSubject = null;
 
-        // パラメータの存在確認
+        // パラメータの取得
         subject_cd = req.getParameter("subject_cd");
         subject_name = req.getParameter("subject_name");
-        if (subject_cd == null || subject_cd.isEmpty() || subject_name == null || subject_name.isEmpty()) {
-            req.setAttribute("sderror", "科目コードまたは科目名が入力されていません。");
+
+        boolean hasError = false;
+
+        // 入力チェック
+        if (subject_cd == null || subject_cd.isEmpty()) {
+            req.setAttribute("subject_cd_error", "科目コードが入力されていません。");
+            hasError = true;
+        } else if (subject_cd.length() != 3) {
+            req.setAttribute("subject_cd_error", "科目コードは3文字で入力してください。");
+            hasError = true;
+        }
+
+        if (subject_name == null || subject_name.isEmpty()) {
+            req.setAttribute("subject_name_error", "科目名が入力されていません。");
+            hasError = true;
+        }
+
+        req.setAttribute("f1", subject_cd);
+        req.setAttribute("f2", subject_name);
+
+        if (hasError) {
             req.getRequestDispatcher("subject_create.jsp").forward(req, res);
             return;
         }
 
-        // 科目コードの文字数チェック（3文字固定）
-        if (subject_cd.length() != 3) {
-            req.setAttribute("sderror", "科目コードは3文字で入力してください。");
-            req.setAttribute("f1", subject_cd);
-            req.setAttribute("f2", subject_name);
-            req.getRequestDispatcher("subject_create.jsp").forward(req, res);
-            return;
-        }
-
-        // 既存科目チェック
+        // 重複チェック
         try {
             existingSubject = subjectDao.get(subject_cd, teacher.getSchool());
         } catch (Exception e) {
@@ -67,31 +76,24 @@ public class SubjectCreateExecuteAction extends Action {
             return;
         }
 
-        // 重複チェック
         if (existingSubject != null) {
-            error = "科目コードが重複しています。";
-            req.setAttribute("sderror", error);
-        }
-
-        // エラーがあればフォームに戻す
-        if (error != null) {
-            req.setAttribute("f1", subject_cd);
-            req.setAttribute("f2", subject_name);
+            req.setAttribute("subject_cd_error", "科目コードが重複しています。");
             req.getRequestDispatcher("subject_create.jsp").forward(req, res);
-        } else {
-            // 登録処理
-            subject.setCd(subject_cd);
-            subject.setName(subject_name);
-            subject.setSchool(teacher.getSchool());
-            result = subjectDao.save(subject);
-
-            if (result) {
-                req.setAttribute("suc", "登録が完了しました。");
-            } else {
-                req.setAttribute("suc", "登録に失敗しました。内容確認の上もう一度お願いします。");
-            }
-
-            req.getRequestDispatcher("subject_create_done.jsp").forward(req, res);
+            return;
         }
+
+        // 登録処理
+        subject.setCd(subject_cd);
+        subject.setName(subject_name);
+        subject.setSchool(teacher.getSchool());
+        result = subjectDao.save(subject);
+
+        if (result) {
+            req.setAttribute("suc", "登録が完了しました。");
+        } else {
+            req.setAttribute("suc", "登録に失敗しました。内容確認の上もう一度お願いします。");
+        }
+
+        req.getRequestDispatcher("subject_create_done.jsp").forward(req, res);
     }
 }
