@@ -24,13 +24,13 @@ public class TestDao extends Dao {
 
 		try {
 			statement = connection.prepareStatement("SELECT student.ent_year, student.class_num, "
-					+ "student.no, student.name, test.point, test.subject_cd test.school_cd"
+					+ "student.no, student.name, test.point, test.subject_cd, test.school_cd "
 					+ "FROM student LEFT JOIN test "
 					+ "ON student.no = test.student_no AND student.school_cd = test.school_cd "
 					+ "AND student.class_num = test.class_num AND test.subject_cd = ? "
 					+ "AND test.no = ? "
-					+ "WHERE student.class_num = ? AND test.school_cd AND test.student_no = ?"
-					+ "GROUP BY student.ent_year, student.class_num, student.no, student.name, test.subject_cd;");
+					+ "WHERE student.class_num = ? AND test.school_cd = ? AND test.student_no = ? "
+					+ "GROUP BY student.ent_year, student.class_num, student.no, student.name, test.subject_cd, test.school_cd;");
 
 			statement.setString(1, subject.getCd());
 			statement.setInt(2, no);
@@ -87,6 +87,7 @@ public class TestDao extends Dao {
 					School school = new School();
 					student.setEntYear(rSet.getInt("ent_year"));
 					student.setName(rSet.getString("name"));
+					student.setNo(rSet.getString("no"));
 					test_l.setStudent(student);
 					test_l.setClassNum(rSet.getString("class_num"));
 					test_l.setNo(rSet.getInt("no"));
@@ -191,8 +192,8 @@ public class TestDao extends Dao {
 	    try {
 			// 科目が存在しているかどうかのチェック用データ
 			Test old = get(test.getStudent(), test.getSubject(), test.getSchool(), test.getNo());
-			// 存在してない場合入力データ登録
-			if (old.getPoint() == 0) {
+
+			if (old == null) {
 				statement = connection.prepareStatement(
 						"INSERT INTO test(student_no, subject_cd, school_cd, no, point, class_num) values(?, ?, ?, ?, ?, ?)");
 				statement.setString(1, test.getStudent().getNo());
@@ -201,11 +202,9 @@ public class TestDao extends Dao {
 				statement.setInt(4, test.getNo());
 				statement.setInt(5, test.getPoint());
 				statement.setString(6, test.getClassNum());
-			// 存在している場合データの変更登録
 			} else {
-				// 更新
 	            statement = connection.prepareStatement(
-	                    "UPDATE test SET point = ? WHERE student_no = ? subject_cd = ?, no = ?");
+	                    "UPDATE test SET point = ? WHERE student_no = ? AND subject_cd = ? AND no = ?"); // SQL 修正
 	            statement.setInt(1, test.getPoint());
 	            statement.setString(2, test.getStudent().getNo());
 	            statement.setString(3, test.getSubject().getCd());
@@ -222,9 +221,9 @@ public class TestDao extends Dao {
 	    } finally {
 	        if (statement != null) {
 	        	try {
-		            connection.close();
+		            statement.close(); // connection ではなく statement を閉じる
 		        } catch (SQLException sqle) {
-		            throw sqle;
+		        	sqle.printStackTrace(); // エラーログ推奨
 		        }
 	        }
 	    }
