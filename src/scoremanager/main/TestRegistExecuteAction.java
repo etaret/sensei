@@ -1,7 +1,8 @@
-
 package scoremanager.main;
 
+import java.util.Enumeration;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +13,7 @@ import bean.Student;
 import bean.Subject;
 import bean.Teacher;
 import bean.Test;
-import dao.StudentDao;
+// import dao.StudentDao; // StudentDao は現時点では不要なのでコメントアウト
 import dao.TestDao;
 import tool.Action;
 
@@ -22,39 +23,56 @@ public class TestRegistExecuteAction extends Action {
         // セッション取得
         HttpSession session = req.getSession();
         Teacher teacher = (Teacher) session.getAttribute("user");
+        School school = teacher.getSchool(); // teacherからSchoolを取得
 
-        // リクエストパラメータから入力情報取得
-        String no = req.getParameter("no");
-        String name = req.getParameter("name");
-        String entYearStr = req.getParameter("ent_year");
-        String classNum = req.getParameter("class_num");
-        Subject subject = new Subject();
-        subject.setCd(req.getParameter("subject"));
-        String numStr = req.getParameter("num");
-        School school = teacher.getSchool();
+        // 送信されたエントリ数を特定
+        int count = 0;
+        while (req.getParameter("studentNos[" + count + "]") != null) {
+            count++;
+        }
 
+        List<Test> testsToSave = new ArrayList<>(); // 保存用リストを初期化
 
-        // 年度は整数として扱う（バリデーション必要なら追加）
-        int entYear = Integer.parseInt(entYearStr);
-        int num = Integer.parseInt(numStr);
-        // Studentインスタンス生成・設定
-        Student student = new Student();
-        student.setNo(no);
-        student.setName(name);
-        student.setEntYear(entYear);
-        student.setClassNum(classNum);
-        student.setSchool(teacher.getSchool()); // 所属学校も設定
+        // 各エントリのパラメータをループで取得してTestオブジェクトを作成
+        if (count > 0) {
+            for (int i = 0; i < count; i++) {
+                // パラメータ取得
+                String studentNo = req.getParameter("studentNos[" + i + "]");
+                String subjectCd = req.getParameter("subjectCds[" + i + "]");
+                String testNoStr = req.getParameter("testNos[" + i + "]");
+                String classNum = req.getParameter("classNums[" + i + "]");
+                String pointStr = req.getParameter("points[" + i + "]");
 
+                // 数値に変換 (エラーハンドリングなし)
+                int testNo = Integer.parseInt(testNoStr);
+                int point = Integer.parseInt(pointStr); // 空文字や数値以外だと例外発生
 
+                // Testオブジェクト生成
+                Test test = new Test();
+                Student student = new Student();
+                student.setNo(studentNo);
+                student.setSchool(school); // studentにもschoolを設定
 
-        // DAOで登録処理
-        StudentDao sDao = new StudentDao();
+                Subject subject = new Subject();
+                subject.setCd(subjectCd);
+                subject.setSchool(school); // 必要であればsubjectにもschoolを設定
 
+                test.setStudent(student);
+                test.setSubject(subject);
+                test.setSchool(school);
+                test.setNo(testNo);
+                test.setPoint(point);
+                test.setClassNum(classNum);
+
+                testsToSave.add(test); // リストに追加
+            }
+        }
 
         TestDao tDao = new TestDao();
-        List<Test> tests = tDao.filter(entYear, classNum, subject, num, school);
-        System.out.print(tests);
+        boolean result = tDao.save(testsToSave); // saveメソッドにリストを渡す
+        System.out.println("Save result: " + result); // 実行結果をログに出力
 
+        // 完了ページへフォワード
         req.getRequestDispatcher("test_regist_done.jsp").forward(req, res);
     }
 }

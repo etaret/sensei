@@ -46,6 +46,8 @@ public class TestRegistAction extends Action {
 		SubjectDao sDao = new SubjectDao(); // SubjectDao をインスタンス化
 		TestDao tDao = new TestDao(); // TestDao をインスタンス化
 
+		
+
 		// リスト変数の宣言と初期化()
 		List<Integer> entYearSet = new ArrayList<>();
 		List<String> classNumList = null; // クラス番号リスト
@@ -86,7 +88,6 @@ public class TestRegistAction extends Action {
 			subject.setCd(subjectCd); // Subject インスタンスを作成して CD を設定
 			int num = Integer.parseInt(numStr);
 
-			// filterメソッドを呼び出し (ループは一旦コメントアウト)
 			tests = tDao.filter(entYear, classNum, subject, num, school);
 			req.setAttribute("tests", tests); // 取得したリストをリクエスト属性に設定
 			req.setAttribute("type", "list"); // type属性を設定
