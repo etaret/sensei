@@ -55,7 +55,7 @@
 					<table class="table table-hover">
 						<tr>
 							<th>入学年度</th>
-							<th>学生No</th>
+							<th>学生番号</th>
 							<th>氏名</th>
 							<th>クラス</th>
 							<th class="text-center">在学中</th>

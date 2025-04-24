@@ -29,7 +29,8 @@
 								<td>
 									<%-- 削除確認付き --%>
 									<a href="ClassStudentDelete.action?student_no=${astuzz.no}&class_num=${astuzz.classNum}"
-									onclick="return confirm('本当に削除してもよろしいですか？');">削除</a>
+									onclick="return confirm('本当に削除してもよろしいですか？');"
+									class="btn btn-outline-danger btn-sm">削除</a>
 								</td>
 							</tr>
 						</c:forEach>
@@ -58,7 +59,8 @@
 								<td>
 									<%-- 削除確認付き --%>
 									<a href="ClassStudentDelete.action?student_no=${gstuzz.no}&class_num=${gstuzz.classNum}"
-									onclick="return confirm('本当に削除してもよろしいですか？');">削除</a>
+									onclick="return confirm('本当に削除してもよろしいですか？');"
+									class="btn btn-outline-danger btn-sm">削除</a>
 								</td>
 							</tr>
 						</c:forEach>
@@ -66,16 +68,16 @@
 				</c:when>
 			</c:choose>
 			<div class="row mt-3">
-			    <!-- 戻るボタン -->
-			    <div class="col-auto">
-			        <a href="ClassList.action" class="btn btn-primary">戻る</a>
-			    </div>
-
 			    <!-- 入力フォーム -->
-			    <div class="col-auto ms-auto">
+			    <div class="col-auto">
 			        <form action="AllDelete.action" method="get" class="d-flex">
 			            <input type="text" name="delete" class="form-control border-0 text-danger fw-bold">
 			        </form>
+			    </div>
+
+			    <!-- 戻るボタン -->
+			    <div class="col-auto ms-auto">
+			        <a href="ClassList.action" class="btn btn-outline-secondary">戻る</a>
 			    </div>
 			</div>
 		</section>

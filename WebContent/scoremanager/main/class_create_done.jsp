@@ -13,7 +13,7 @@
 	<p class="col d-flex align-items-center justify-content-center mx-2 bg-success bg-opacity-50 text-dark py-1 px-4">
 	${suc}</p>
 	<div class="link-container">
-		<a href="ClassCreate.action">戻る</a>
+		<a href="ClassCreate.action">追加登録</a>
 		<a href="ClassList.action">クラス一覧</a>
 	</div>
 	<style>

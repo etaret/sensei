@@ -382,7 +382,7 @@ public class ClassNumDao extends Dao{
 
 			try {
 				statement = connection.prepareStatement(
-						"DELETE FROM class_num WHERE school_cd = ? AND class_num =  ? AND no = ?");
+						"DELETE FROM student WHERE school_cd = ? AND class_num =  ? AND no = ?");
 				statement.setString(1, student.getSchool().getCd());
 				statement.setString(2, student.getClassNum());
 				statement.setString(3, student.getNo());
