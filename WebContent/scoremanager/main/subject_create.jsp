@@ -28,6 +28,10 @@
                                     type="text" required />
                             </c:otherwise>
                         </c:choose>
+                        <%-- 科目コードのエラー表示 --%>
+                        <c:if test="${not empty subject_cd_error}">
+                            <p class="mt-2 fw-bold text-warning">${subject_cd_error}</p>
+                        </c:if>
                     </div>
                 </div>
 
@@ -47,13 +51,17 @@
                                     type="text" required />
                             </c:otherwise>
                         </c:choose>
+                        <%-- 科目名のエラー表示 --%>
+                        <c:if test="${not empty subject_name_error}">
+                            <p class="mt-2 fw-bold text-warning">${subject_name_error}</p>
+                        </c:if>
                     </div>
-
-                    <%-- エラー出力 --%>
-                    <c:if test="${not empty sderror}">
-                        <p class="mt-2 fw-bold text-warning">${sderror}</p>
-                    </c:if>
                 </div>
+
+                <%-- その他のエラー出力 --%>
+                <c:if test="${not empty sderror}">
+                    <p class="mt-2 fw-bold text-warning">${sderror}</p>
+                </c:if>
 
                 <%-- 登録ボタン --%>
                 <div class="col-12 mb-3">

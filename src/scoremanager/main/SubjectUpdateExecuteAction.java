@@ -22,12 +22,17 @@ public class SubjectUpdateExecuteAction extends Action {
         String subject_cd = req.getParameter("cd");
         String subject_name = req.getParameter("name");
 
-        // 科目情報の取得
+        // DAOの用意
         SubjectDao subjectDao = new SubjectDao();
+
+        // 科目取得
         Subject subject = subjectDao.get(subject_cd, teacher.getSchool());
 
         if (subject == null) {
-            req.setAttribute("sderror", "指定された科目が見つかりません。");
+            // 削除されていた or 存在しない場合
+            req.setAttribute("sderror", "指定された科目は存在しません。");
+            req.setAttribute("cd", subject_cd);
+            req.setAttribute("name", subject_name);
             req.getRequestDispatcher("subject_update.jsp").forward(req, res);
             return;
         }
@@ -37,19 +42,23 @@ public class SubjectUpdateExecuteAction extends Action {
         boolean result = subjectDao.save(subject);
 
         if (!result) {
-            // 更新失敗時にもう一度取得して削除されたかを確認
+            // 更新失敗 → 再取得して削除確認
             Subject checkSubject = subjectDao.get(subject_cd, teacher.getSchool());
             if (checkSubject == null) {
-                req.setAttribute("sderror", "科目が存在していません。");
-                req.getRequestDispatcher("subject_update.jsp").forward(req, res);
-                return;
+                // 他画面などで削除されていた
+                req.setAttribute("sderror", "指定された科目は存在しません。");
             } else {
-                req.setAttribute("suc", "変更に失敗しました。");
+                // 削除ではないけど更新失敗
+                req.setAttribute("sderror", "科目の変更に失敗しました。");
             }
-        } else {
-            req.setAttribute("suc", "変更が完了しました。");
+            req.setAttribute("cd", subject_cd);
+            req.setAttribute("name", subject_name);
+            req.getRequestDispatcher("subject_update.jsp").forward(req, res);
+            return;
         }
 
+        // 更新成功
+        req.setAttribute("suc", "変更が完了しました。");
         req.getRequestDispatcher("subject_update_done.jsp").forward(req, res);
     }
 }
