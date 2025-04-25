@@ -46,7 +46,7 @@
 							<c:forEach var="clazz" items="${classes}">
 								<tr>
 									<td>
-										<input type="checkbox" name="selectedClasses" value="${clazz.class_num}" />
+										<input type="checkbox" name="selectedClasses" value="${clazz.class_num}:${clazz.c_count}" />
 									</td>
 									<td>
 										<a href="ClassStudentList.action?class_num=${clazz.class_num}"
@@ -67,11 +67,11 @@
 								</tr>
 							</c:forEach>
 						</table>
-						<div class="my-2 text-end px-4">
-							<!-- メニューへ戻るボタン -->
-							<button type="button" class="btn btn-outline-secondary" onclick="window.location.href='Menu.action'">メニューへ戻る</button>
-						</div>
 					</form>
+					<div class="d-flex justify-content-start">
+					    <!-- メニューへ戻るボタン（左下に配置） -->
+					    <input type="button" value="メニューへ戻る" class="btn btn-outline-secondary" onclick="window.location.href='Menu.action'" />
+					</div>
 				</c:when>
 			</c:choose>
 		</section>

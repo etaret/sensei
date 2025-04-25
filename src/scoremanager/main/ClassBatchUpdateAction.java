@@ -1,6 +1,9 @@
 // 変更のためjspへ
 package scoremanager.main;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,18 +16,38 @@ public class ClassBatchUpdateAction extends Action {
 		HttpServletRequest req, HttpServletResponse res
 	) throws Exception {
 		// 変数定義
-		String class_num;
-		int c_count;
+		String[] selectedClasses;
+		List<String> classNums = new ArrayList<>();
+		List<Integer> counts = new ArrayList<>();
+
 
 		// 値取得
-        class_num = req.getParameter("class_num");
-        c_count = Integer.parseInt(req.getParameter("c_count"));
+		// チェックボックスで選択されたクラス番号の取得
+        selectedClasses = req.getParameterValues("selectedClasses");
 
-        // 値セット
-        req.setAttribute("old_class_num", class_num);
-        req.setAttribute("c_count", c_count);
+        // 値分解
+        if (selectedClasses != null && selectedClasses.length > 0) {
+            for (String selectedClass : selectedClasses) {
+                // クラス番号と在籍数を ":" で分割
+                String[] classData = selectedClass.split(":");
+                String classNum = classData[0];  // クラス番号
+                int classCount = Integer.parseInt(classData[1]);  // 在籍数
+     
+                // リストに追加
+                classNums.add(classNum);
+                counts.add(classCount);
+            }
 
-		req.getRequestDispatcher("class_update.jsp").forward(req, res);
+
+	        // 値セット
+	        req.setAttribute("old_class_nums", classNums);
+	        req.setAttribute("c_counts", counts);
+
+        } else {
+        	req.setAttribute("error", "更新するクラスが選択されていません。");
+        }
+
+        req.getRequestDispatcher("class_batch_update.jsp").forward(req, res);
 	}
 
 }

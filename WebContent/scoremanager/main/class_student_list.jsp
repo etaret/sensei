@@ -68,16 +68,16 @@
 				</c:when>
 			</c:choose>
 			<div class="row mt-3">
-			    <!-- 入力フォーム -->
+			    <!-- 戻るボタン（左側） -->
 			    <div class="col-auto">
-			        <form action="AllDelete.action" method="get" class="d-flex">
-			            <input type="text" name="delete" class="form-control border-0 text-danger fw-bold">
-			        </form>
+			        <a href="ClassList.action" class="btn btn-outline-secondary">戻る</a>
 			    </div>
 
-			    <!-- 戻るボタン -->
+			    <!-- 入力フォーム（右側） -->
 			    <div class="col-auto ms-auto">
-			        <a href="ClassList.action" class="btn btn-outline-secondary">戻る</a>
+			        <form action="AllDelete.action" method="get" class="d-flex">
+			            <input type="text" name="delete" class="form-control border-0 text-danger fw-bold" />
+			        </form>
 			    </div>
 			</div>
 		</section>

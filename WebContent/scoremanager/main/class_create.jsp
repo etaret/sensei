@@ -9,40 +9,46 @@
 
 	<c:param name="content">
 		<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">クラス情報登録</h2>
+
 		<div class="col-11 mx-auto">
 			<form action="ClassCreateExecute.action" method="get">
 
-				<%-- クラス番号入力ボックス --%>
+				<!-- クラス番号入力 -->
 				<div class="col-12 mb-3">
 					<label class="form-label">クラス番号</label>
 					<div>
 						<c:choose>
 							<c:when test="${not empty f1}">
-								<input class="form-control"
-									maxlength="10" name="class_num" placeholder="クラス番号を入力してください"
-									type="text" value="${f1}" required />
+								<input class="form-control" maxlength="10" name="class_num"
+									placeholder="クラス番号を入力してください" type="text" value="${f1}" required />
 							</c:when>
 							<c:otherwise>
-								<input class="form-control"
-									maxlength="10" name="class_num" placeholder="クラス番号を入力してください"
-									type="text" required />
+								<input class="form-control" maxlength="10" name="class_num"
+									placeholder="クラス番号を入力してください" type="text" required />
 							</c:otherwise>
 						</c:choose>
 					</div>
 
-					<%-- エラー出力 --%>
-					<c:if test="${not empty cderror}">
-						<p class="mt-2 fw-bold text-warning">${cderror}</p>
-					</c:if>
+					<!-- エラー表示 (テキストボックスの下に表示) -->
+					<div class="col-12 mb-4">
+						<c:if test="${not empty cderror}">
+							<p class="mt-2 fw-bold text-warning">${cderror}</p>
+						</c:if>
+					</div>
 				</div>
-				<%--- 登録終了ボタン --%>
-				<div class="col-12 mb-3">
-					<button class="btn btn-primary" id="filter-button" name="end">新規登録</button>
+
+
+				<!-- ボタン配置（戻るは左、新規登録は右） -->
+				<div class="d-flex justify-content-between col-12 mb-3">
+					<!-- 戻るボタン -->
+					<input type="button" value="戻る" class="btn btn-outline-secondary"
+					       onclick="window.location.href='ClassList.action'" />
+
+					<!-- 新規登録ボタン -->
+					<input type="submit" value="新規登録" class="btn btn-outline-primary" />
 				</div>
+
 			</form>
-			<div class="col-12 mb-3">
-				<a href="ClassList.action">戻る</a>
-			</div>
 		</div>
 	</c:param>
 </c:import>

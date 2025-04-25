@@ -8,13 +8,14 @@
 	<c:param name="scripts"></c:param>
 
 	<c:param name="content">
-		<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">クラス情報変更</h2>
+		<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">クラス情報更新</h2>
+
 		<div class="col-11 mx-auto">
 			<form action="ClassUpdateExecute.action" method="get">
 
-				<%-- クラス番号入力ボックス --%>
+				<!-- クラス番号入力ボックス -->
 				<div class="col-12 mb-3">
-					<label>クラス番号</label>
+					<label for="class_num" class="form-label">クラス番号</label>
 					<div>
 						<c:choose>
 							<c:when test="${not empty f1}">
@@ -33,23 +34,26 @@
 
 						<input type="hidden" name="c_count" value="${c_count}" />
 					</div>
+					<!-- エラーメッセージ -->
+					<div class="col-12 mb-4">
+						<c:if test="${not empty cderror}">
+							<p class="mt-2 fw-bold text-warning">${cderror}</p>
+						</c:if>
+					</div>
+				</div>
 
-					<%-- エラー出力 --%>
-					<c:if test="${not empty cderror}">
-						<p class="mt-2 fw-bold text-warning">${cderror}</p>
-					</c:if>
+				<!-- ボタン配置（戻るは左、更新は右） -->
+				<div class="d-flex justify-content-between col-12 mb-3">
+					<!-- 戻るボタン -->
+					<input type="button" value="戻る" class="btn btn-outline-secondary"
+					       onclick="window.location.href='ClassList.action'" />
+
+					<!-- 更新ボタン -->
+					<input type="submit" value="更新" class="btn btn-outline-primary" />
 				</div>
-				<%--- 登録終了ボタン --%>
-				<div class="col-12 mb-3">
-					<button class="btn btn-primary" id="filter-button" name="end">変更を登録</button>
-				</div>
+
 			</form>
-			<div class="col-12 mb-3">
-				<a href="ClassList.action">戻る</a>
-			</div>
 		</div>
-
-
 
 	</c:param>
 </c:import>
