@@ -9,7 +9,12 @@
 
 	<c:param name="content">
 		<section class="m-4">
-			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">所属している学生</h2>
+			<div class="text-container" style="position: relative; display: inline-block; width: 100%;">
+			    <h2 class="h3 mb-3 fw-norma py-2 px-4" style="position: relative; z-index: 1; background-color: #fff; display: inline-block; margin-left: 20px;">
+			        所属している学生
+			    </h2>
+			    <div style="background-image: linear-gradient(to right, #000000, #FFFFFF); height: 2px; position: absolute; bottom: 9px; left: 0; right: 0; z-index: 0;"></div>
+			</div>
 			<c:choose>
 				<c:when test="${activeStudents.size()>0}">
 					<div class="row">

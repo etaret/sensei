@@ -8,7 +8,12 @@
 	<c:param name="scripts"></c:param>
 
 	<c:param name="content">
-		<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">クラス情報更新</h2>
+		<div class="text-container" style="position: relative; display: inline-block; width: 100%;">
+		    <h2 class="h3 mb-3 fw-norma py-2 px-4" style="position: relative; z-index: 1; background-color: #fff; display: inline-block; margin-left: 20px;">
+		        クラス情報更新
+		    </h2>
+		    <div style="background-image: linear-gradient(to right, #000000, #FFFFFF); height: 2px; position: absolute; bottom: 9px; left: 0; right: 0; z-index: 0;"></div>
+		</div>
 
 		<div class="col-11 mx-auto">
 			<form action="ClassUpdateExecute.action" method="get">
@@ -49,7 +54,7 @@
 					       onclick="window.location.href='ClassList.action'" />
 
 					<!-- 更新ボタン -->
-					<input type="submit" value="更新" class="btn btn-outline-primary" />
+					<input type="submit" value="更新" class="btn btn-outline-warning btn-sm" />
 				</div>
 
 			</form>
