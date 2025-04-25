@@ -3,9 +3,9 @@ package scoremanager.main;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-// import java.util.HashMap; // 不要
+import java.util.HashMap; // HashMap の import を復活
 import java.util.List;
-// import java.util.Map; // 不要
+import java.util.Map; // Map の import を復活
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +32,7 @@ public class TestListSubjectExecuteAction extends Action {
 		List<Integer> entYearSet = new ArrayList<>();
 		List<String> classNumList = null;
 		List<Subject> subjectList = null;
-		// Map<String, String> errors = new HashMap<>(); // 削除
+		Map<String, String> errors = new HashMap<>(); // コメントアウト解除
 		ClassNumDao cNumDao = new ClassNumDao();
 		SubjectDao subDao = new SubjectDao();
 		TestListSubjectDao tlsDao = new TestListSubjectDao();
@@ -50,23 +50,34 @@ public class TestListSubjectExecuteAction extends Action {
 		String classNumStr = req.getParameter("f2");
 		String subjectCd = req.getParameter("f3");
 
-		// リクエストパラメータをコンソールに出力 (これは残す)
 		System.out.println("入学年度: " + entYearStr);
 		System.out.println("クラス: " + classNumStr);
 		System.out.println("科目コード: " + subjectCd);
 
-		// パラメータチェックとエラーハンドリングを削除
-		// try-catch ブロックも削除
-
-		// 必須パラメータから値を取得して検索実行 (エラーチェックなし)
 		int entYear = Integer.parseInt(entYearStr);
 		Subject filterSubject = subDao.get(subjectCd, teacher.getSchool());
-		List<TestListSubject> subjectTests = tlsDao.filter(entYear, classNumStr, filterSubject, teacher.getSchool());
+		List<TestListSubject> subjectTests = null;
 
-		System.out.println("entYear (int): " + entYear); // 確認用
-		System.out.println("filterSubject: " + (filterSubject != null ? filterSubject.getName() : "null")); // 確認用
-		System.out.println("total count: " + (subjectTests != null ? subjectTests.size() : "null")); // 件数確認用
-		System.out.println("subjectTests: " + subjectTests); // subjectTests リストの内容を出力 (末尾のドットを削除)
+
+		// idk what i'm doing here
+		if (filterSubject != null) {
+			subjectTests = tlsDao.filter(entYear, classNumStr, filterSubject, teacher.getSchool());
+		} else {
+			if (subjectCd != null && !subjectCd.isEmpty() && !subjectCd.equals("0")) {
+				errors.put("filter", "指定された科目が存在しません。");
+			}
+		}
+
+		System.out.println("entYear (int): " + entYear);
+		System.out.println("filterSubject: " + (filterSubject != null ? filterSubject.getName() : "null"));
+		System.out.println("total count: " + (subjectTests != null ? subjectTests.size() : "null"));
+		System.out.println("subjectTests: " + subjectTests);
+
+		if (entYearStr == null || entYearStr.isEmpty() || entYearStr.equals("0") || // entYear == "0" を修正
+			classNumStr == null || classNumStr.isEmpty() || classNumStr.equals("0") ||
+			subjectCd == null || subjectCd.isEmpty() || subjectCd.equals("0")) {
+			errors.put("filter", "入学年度、クラス、科目を選択してください。"); // エラーメッセージのキーを filter に変更
+		}
 
 		// JSP に渡す属性を設定
 		req.setAttribute("ent_year_set", entYearSet);
@@ -75,9 +86,9 @@ public class TestListSubjectExecuteAction extends Action {
 		req.setAttribute("f1", entYearStr);
 		req.setAttribute("f2", classNumStr);
 		req.setAttribute("f3", subjectCd);
-		req.setAttribute("selectedSubject", filterSubject); // 取得した科目オブジェクトを設定
-		req.setAttribute("subjectTests", subjectTests); // 検索結果を設定
-		// req.setAttribute("errors", errors); // 削除
+		req.setAttribute("selectedSubject", filterSubject);
+		req.setAttribute("subjectTests", subjectTests);
+		req.setAttribute("errors", errors); // 復活
 
 		// 検索タイプを設定
 		req.setAttribute("resultType", "subject");
