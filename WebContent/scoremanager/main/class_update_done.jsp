@@ -21,7 +21,6 @@
 			</div>
 		</c:if>
 
-		<!-- リンク配置（再度変更：左、クラス一覧：右） -->
 		<div class="d-flex justify-content-between mt-5 px-4">
 			<a href="ClassList.action" class="btn btn-outline-secondary">クラス一覧へ</a>
 		</div>

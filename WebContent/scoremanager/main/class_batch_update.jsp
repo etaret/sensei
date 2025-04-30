@@ -33,11 +33,7 @@
                                 <c:forEach var="clazzNum" items="${old_class_nums}" varStatus="status">
                                     <tr>
                                         <!-- クラス番号（入力不可） -->
-                                        <td>
-                                            <input type="text" name="old_class_num"
-                                                   value="${clazzNum}" class="form-control-plaintext px-3 fs-5"
-                                                   readonly />
-                                        </td>
+                                        <td class="px-3 fs-5">${clazzNum }</td>
 
                                         <!-- 在籍数 -->
                                         <td class="px-3 fs-5">${c_counts[status.index]}</td> <!-- 文字の大きさ調整 -->
@@ -45,7 +41,9 @@
                                         <!-- 新しいクラス番号入力 -->
                                         <td class="px-3">
                                             <input class="form-control px-5 fs-5"
-                                                   name="new_class_nums" type="text" maxlength="10" required />
+                                                   name="new_class_nums[${status.index }]" type="text" maxlength="10" required />
+                                            <input type="hidden" name="old_class_nums[${status.index }]" value="${clazzNum }">
+                                            <input type="hidden" name="c_counts[${status.index }]" value="${c_counts[status.index] }">
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -55,7 +53,7 @@
                         <!-- ボタン群 -->
                         <div class="d-flex justify-content-between">
                             <input type="button" value="戻る" class="btn btn-outline-secondary" onclick="window.location.href='ClassList.action'" />
-                            <input type="submit" formaction="ClassBatchUpdate.action" value="一括更新" class="btn btn-outline-warning" />
+                            <input type="submit" formaction="ClassBatchUpdateExecute.action" value="一括更新" class="btn btn-outline-warning" />
                         </div>
                     </form>
                 </c:when>
