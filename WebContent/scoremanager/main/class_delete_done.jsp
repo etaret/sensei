@@ -30,8 +30,8 @@
 			</div>
 		</c:if>
 
-		<!-- リンク配置 -->
-		<div class="d-flex justify-content-center mt-5 px-4">
+		<!-- 戻るボタン -->
+		<div class="d-flex justify-content-between mt-5 px-4">
 			<a href="ClassList.action" class="btn btn-outline-secondary">クラス一覧へ</a>
 		</div>
 

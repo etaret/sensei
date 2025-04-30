@@ -23,7 +23,6 @@
 			</div>
 		</c:if>
 
-		<!-- リンク配置（追加登録：左、クラス一覧：右） -->
 		<div class="d-flex justify-content-between mt-5 px-4">
 			<a href="ClassCreate.action" class="btn btn-outline-primary">追加登録</a>
 			<a href="ClassList.action" class="btn btn-outline-secondary">クラス一覧へ</a>

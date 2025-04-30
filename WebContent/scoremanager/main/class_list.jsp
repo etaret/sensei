@@ -36,10 +36,11 @@
                                    class="btn btn-outline-warning" />
 
                             <!-- 一括削除ボタン -->
-                            <input type="button"
+                            <input type="submit"
+                                   formaction="ClassBatchDelete.action"
                                    value="一括削除"
-                                   onclick="return validateDeletion();"
-                                   class="btn btn-outline-danger" />
+                                   class="btn btn-outline-danger"
+                                   onclick="return validateDeletion();" />
                         </div>
 
                         <div>表示数：${classes.size()}件</div>
