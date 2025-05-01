@@ -17,8 +17,8 @@
 <br>
 <br>
 
-<a>　　　　　</a>
-<a href="TestList.action">成績一覧</a>
+<a href="TestRegist.action">戻る</a>
+<a href="TestList.action">成績参照</a>
 </div>
 </div>
 </c:param>
