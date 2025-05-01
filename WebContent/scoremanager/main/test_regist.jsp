@@ -56,6 +56,10 @@
 				</form>
 
 				<div class="mt-3 text-warning">${errors.get("filter")}</div>
+				<div class="mt-1 text-warning">${errors.get("ent_year")}</div> <%-- 入学年度エラー表示 --%>
+				<div class="mt-1 text-warning">${errors.get("class_num")}</div> <%-- クラスエラー表示 --%>
+				<div class="mt-1 text-warning">${errors.get("subject")}</div> <%-- 科目エラー表示 --%>
+				<div class="mt-1 text-warning">${errors.get("num")}</div> <%-- テスト回数エラー表示を追加 --%>
 
 				<c:if test="${not empty tests}">
 					<form method="post" action="TestRegistExecute.action">
@@ -92,7 +96,7 @@
 						</div>
 					</form>
 				</c:if>
-				 <c:if test="${empty tests and not empty param.ent_year}">
+				 <c:if test="${empty tests and not empty param.ent_year and empty errors}"> <%-- errorsが空の場合のみ表示 --%>
 					<div class="mt-3 alert alert-warning">成績情報が存在しませんでした。</div>
 				 </c:if>
 

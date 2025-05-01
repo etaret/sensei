@@ -3,6 +3,8 @@ package scoremanager.main;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,12 +30,26 @@ public class TestRegistAction extends Action {
 		School school = teacher.getSchool(); // school を取得
 		LocalDate todaysDate = LocalDate.now(); // LcalDateインスタンス
 		int year = todaysDate.getYear();
+		Map<String, String> errors = new HashMap<>(); // エラーメッセージ用マップを初期化
 
 		// 検索用にリクエストパラメータを取得
 		String entYearStr = req.getParameter("ent_year");
 		String classNumStr = req.getParameter("class_num");
 		String subjectCd = req.getParameter("subject");
 		String numStr = req.getParameter("num");
+
+		if (numStr != null && numStr.equals("0")) {
+			errors.put("num", "テスト回数を選択してください");
+		}
+		if (subjectCd != null && subjectCd.equals("0")) {
+			errors.put("subject", "科目を選択してください");
+		}
+		if (classNumStr != null && classNumStr.equals("0")) {
+			errors.put("class_num", "クラスを選択してください");
+		}
+		if (entYearStr != null && entYearStr.equals("0")) {
+			errors.put("ent_year", "入学年度を選択してください");
+		}
 
 		System.out.println(entYearStr);
 		System.out.println(classNumStr);
@@ -93,6 +109,8 @@ public class TestRegistAction extends Action {
 			req.setAttribute("type", "list"); // type属性を設定
 		}
 		System.out.println(tests);
+
+		req.setAttribute("errors", errors); // errorsをリクエストスコープに設定
 
 		// 成績登録ページ (test_regist.jsp を想定) にフォワード
 		req.getRequestDispatcher("test_regist.jsp").forward(req, res);

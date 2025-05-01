@@ -20,7 +20,7 @@
                             <c:when test="${not empty f1}">
                                 <input class="form-control"
                                     maxlength="10" name="subject_cd" placeholder="科目コードを入力してください"
-                                    type="text" value="${f1}" required />
+                                    type="text" value="${cd}" required />
                             </c:when>
                             <c:otherwise>
                                 <input class="form-control"
@@ -43,7 +43,7 @@
                             <c:when test="${not empty f2}">
                                 <input class="form-control"
                                     maxlength="50" name="subject_name" placeholder="科目名を入力してください"
-                                    type="text" value="${f2}" required />
+                                    type="text" value="${name}" required />
                             </c:when>
                             <c:otherwise>
                                 <input class="form-control"

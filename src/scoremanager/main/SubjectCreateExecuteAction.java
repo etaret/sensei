@@ -59,8 +59,8 @@ public class SubjectCreateExecuteAction extends Action {
             hasError = true;
         }
 
-        req.setAttribute("f1", subject_cd);
-        req.setAttribute("f2", subject_name);
+        req.setAttribute("cd", subject_cd);
+        req.setAttribute("name", subject_name);
 
         if (hasError) {
             req.getRequestDispatcher("subject_create.jsp").forward(req, res);
