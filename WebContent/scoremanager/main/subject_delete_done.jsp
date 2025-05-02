@@ -9,7 +9,7 @@
 
 	<c:param name="content">
 <div id="wrap-box">
-<h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">科目情報登録</h2>
+<h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績情報登録</h2>
 <div id="wrap-box">
 <p class="text-center" style="backround-color:#8cc3a9">削除が完了しました</p>
 
@@ -18,7 +18,7 @@
 <br>
 
 <a>　　　　　</a>
-<a href="SubjectList.action">科目一覧</a>
+<a href="SubjectList.action">成績一覧</a>
 </div>
 </div>
 </c:param>
