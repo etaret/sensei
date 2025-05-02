@@ -24,6 +24,11 @@ public class Teacher extends User implements Serializable {
 	private School school;
 
 	/**
+	 * 管理者フラグ:boolean
+	 */
+	private boolean isAdmin;
+
+	/**
 	 * ゲッター・セッター
 	 */
 	public String getId() {
