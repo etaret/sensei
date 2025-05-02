@@ -29,6 +29,11 @@ public class Teacher extends User implements Serializable {
 	private boolean isAdmin;
 
 	/**
+	 * 削除フラグ:boolean
+	 */
+	private boolean isDeleted;
+
+	/**
 	 * ゲッター・セッター
 	 */
 	public String getId() {
@@ -69,5 +74,13 @@ public class Teacher extends User implements Serializable {
 
 	public void setIsAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+
+	public boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 }
