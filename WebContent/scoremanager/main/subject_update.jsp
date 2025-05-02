@@ -34,9 +34,9 @@
                     </div>
                 </div>
 
-                <%-- 変更ボタン --%>
+                <%-- 登録ボタン --%>
                 <div class="col-12 mb-3">
-                    <input type="submit" value="変更">
+                    <button type="submit" class="btn btn-primary">変更</button>
                 </div>
             </form>
 
