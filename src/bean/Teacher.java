@@ -57,4 +57,12 @@ public class Teacher extends User implements Serializable {
 	public void setSchool(School school) {
 		this.school = school;
 	}
+
+	public boolean getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
 }
