@@ -23,11 +23,13 @@
                 <!-- ボタン -->
                 <div class="mt-3">
                     <button type="submit" class="btn btn-danger">削除</button>
-                    <a href="SubjectList.action" class="btn btn-secondary ms-2">戻る</a>
+
                 </div>
 
             </form>
-
+            <div class="col-12 mb-3">
+                <a href="SubjectList.action">戻る</a>
+            </div>
         </div>
     </c:param>
 
