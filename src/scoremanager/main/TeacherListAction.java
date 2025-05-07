@@ -24,7 +24,7 @@ public class TeacherListAction extends Action {
 		TeacherDao teaDao = new TeacherDao();
 
 		// ビジネスロジック
-		teachers = teaDao.get(teacher.getSchool());
+		teachers = teaDao.filter(teacher.getSchool());
 
 		// レスポンス値セット
 		req.setAttribute("teachers", teachers);
