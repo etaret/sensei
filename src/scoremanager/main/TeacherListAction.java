@@ -30,6 +30,6 @@ public class TeacherListAction extends Action {
 		req.setAttribute("teachers", teachers);
 
 		// JSPへフォワード
-		req.getRequestDispatcher("subject_list.jsp").forward(req, res);
+		req.getRequestDispatcher("teacher_list.jsp").forward(req, res);
 	}
 }

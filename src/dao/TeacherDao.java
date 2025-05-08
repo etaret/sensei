@@ -100,11 +100,11 @@ public class TeacherDao extends Dao {
 		List<Teacher> teacherList = new ArrayList<>();
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
-		
+
 		try {
 			statement = connection.prepareStatement("select * from teacher where is_deleted = false");
 			ResultSet resultSet = statement.executeQuery();
-			
+
 			while (resultSet.next()) {
 				Teacher teacher = new Teacher();
 				teacher.setId(resultSet.getString("id"));
@@ -127,7 +127,7 @@ public class TeacherDao extends Dao {
 	public boolean create(Teacher teacher) throws Exception {
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
-		
+
 		try {
 			statement = connection.prepareStatement("insert into teacher (id, password, name, is_admin, is_deleted) values (?, ?, ?, ?, ?)");
 			statement.setString(1, teacher.getId());
@@ -135,6 +135,7 @@ public class TeacherDao extends Dao {
 			statement.setString(3, teacher.getName());
 			statement.setBoolean(4, teacher.getIsAdmin());
 			statement.setBoolean(5, teacher.getIsDeleted());
+			return true;
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -147,7 +148,7 @@ public class TeacherDao extends Dao {
 	public boolean update(Teacher teacher) throws Exception {
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
-		
+
 		try {
 			statement = connection.prepareStatement("update teacher set password = ?, name = ?, is_admin = ?, is_deleted = ? where id = ?");
 			statement.setString(1, teacher.getPassword());
@@ -169,7 +170,7 @@ public class TeacherDao extends Dao {
 	public boolean delete(String id) throws Exception {
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
-		
+
 		try {
 			statement = connection.prepareStatement("update teacher set is_deleted = true where id = ?");
 			statement.setString(1, id);
@@ -187,7 +188,7 @@ public class TeacherDao extends Dao {
 	public boolean restore(String id) throws Exception {
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
-		
+
 		try {
 			statement = connection.prepareStatement("update teacher set is_deleted = false where id = ?");
 			statement.setString(1, id);
@@ -206,11 +207,11 @@ public class TeacherDao extends Dao {
 		List<Teacher> teacherList = new ArrayList<>();
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
-		
+
 		try {
 			statement = connection.prepareStatement("select * from teacher where is_deleted = true");
 			ResultSet resultSet = statement.executeQuery();
-			
+
 			while (resultSet.next()) {
 				Teacher teacher = new Teacher();
 				teacher.setId(resultSet.getString("id"));
@@ -233,15 +234,16 @@ public class TeacherDao extends Dao {
 		return teacherList;
 	}
 
-	public List<Teacher> filterActive() throws Exception {
+	public List<Teacher> filterActive(School school) throws Exception {
 		List<Teacher> teacherList = new ArrayList<>();
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
-		
+
 		try {
-			statement = connection.prepareStatement("select * from teacher where is_deleted = false");
+			statement = connection.prepareStatement("select * from teacher where is_deleted = false AND school_cd = ?");
+			statement.setString(1, school.getCd());
 			ResultSet resultSet = statement.executeQuery();
-			
+
 			while (resultSet.next()) {
 				Teacher teacher = new Teacher();
 				teacher.setId(resultSet.getString("id"));

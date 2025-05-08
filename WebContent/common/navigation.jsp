@@ -12,6 +12,6 @@
 	<li class="nav-item mb-3"><a href="SubjectList.action">科目管理</a></li>
 	<li class="nav-item mb-3"><a href="ClassList.action">クラス管理</a></li>
 	<c:if test="${user.getIsAdmin()}">
-		<li class="nav-item mb-3"><a href="AdminMenu.action">管理者メニュー</a></li>
+		<li class="nav-item mb-3"><a href="TeacherList.action">管理者メニュー</a></li>
 	</c:if>
 </ul>
