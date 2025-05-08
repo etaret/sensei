@@ -18,6 +18,13 @@
                 <c:when test="${teachers.size()>0}">
                     <form method="post" onsubmit="return validateSelection();">
                         <div class="my-2 text-end px-4">
+
+                        	<!-- 復活ボタン -->
+                            <input type="submit"
+                                   formaction="#"
+                                   value="先生復活ボタン"
+                                   class="btn btn-outline-warning" />
+
                             <!-- 新規登録ボタン -->
                             <input type="button"
                                    value="新規登録"
