@@ -50,11 +50,11 @@
 										</c:choose>
 									</td>
                                     <td>
-                                        <a href="TeachersUpdate.action?teachers_id=${teachers.id}"
+                                        <a href="TeachersUpdate.action?teachers_id=${teacher.id}"
                                            class="btn btn-outline-warning btn-sm">更新</a>
                                     </td>
                                     <td>
-                                        <a href="TeachersDelete.action?teachers_id=${teachers.id}"
+                                        <a href="TeachersDelete.action?teachers_id=${teacher.id}"
                                            onclick="return confirm('本当に削除してもよろしいですか？');"
                                            class="btn btn-outline-danger btn-sm">削除</a>
                                     </td>
