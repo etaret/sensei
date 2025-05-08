@@ -21,7 +21,7 @@
 
                         	<!-- 復活ボタン -->
                            <input type="submit"
-						       formaction="#"
+						       formaction="teacher_iyadabotan.jsp"
 						       value="先生復活ボタン"
 						       class="btn btn-outline-dark" />
 
