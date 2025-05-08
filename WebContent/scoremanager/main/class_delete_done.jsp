@@ -18,17 +18,18 @@
 
 		<!-- エラーメッセージ -->
 		<c:if test="${not empty error}">
-			<div class="alert alert-danger text-center fw-bold" role="alert">
-				${error}
-			</div>
+		    <div class="alert alert-danger text-center fw-bold" role="alert">
+		        ${error}
+		    </div>
 		</c:if>
 
 		<!-- 成功メッセージ -->
-		<c:if test="${not empty suc}">
-			<div class="alert alert-success text-center fw-bold" role="alert">
-				${suc}
-			</div>
+		<c:if test="${not empty suc and empty error}">
+		    <div class="alert alert-success text-center fw-bold" role="alert">
+		        ${suc}
+		    </div>
 		</c:if>
+
 
 		<!-- 戻るボタン -->
 		<div class="d-flex justify-content-between mt-5 px-4">
