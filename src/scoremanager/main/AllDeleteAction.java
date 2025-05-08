@@ -4,6 +4,7 @@ package scoremanager.main;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.ClassNumDao;
 import tool.Action;
 
 public class AllDeleteAction extends Action {
@@ -18,7 +19,8 @@ public class AllDeleteAction extends Action {
         String deletecode = req.getParameter("delete");
 
         if (deletecode.equals(deletecheck)) {
-//        	cNumDao.alldelete();
+        	ClassNumDao cNumDao = new ClassNumDao();
+        	cNumDao.alldelete();
         	req.getRequestDispatcher("class_student.jsp").forward(req, res);
         } else {
         	req.getRequestDispatcher("ClassList.action").forward(req, res);
