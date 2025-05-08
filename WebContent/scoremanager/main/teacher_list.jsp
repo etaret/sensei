@@ -20,10 +20,10 @@
                         <div class="my-2 text-end px-4">
 
                         	<!-- 復活ボタン -->
-                            <input type="submit"
-                                   formaction="#"
-                                   value="先生復活ボタン"
-                                   class="btn btn-outline-warning" />
+                           <input type="submit"
+						       formaction="#"
+						       value="先生復活ボタン"
+						       class="btn btn-outline-dark" />
 
                             <!-- 新規登録ボタン -->
                             <input type="button"
