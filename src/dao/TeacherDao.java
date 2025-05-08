@@ -263,6 +263,4 @@ public class TeacherDao extends Dao {
 		}
 		return teacherList;
 	}
-
-	public List
 }
