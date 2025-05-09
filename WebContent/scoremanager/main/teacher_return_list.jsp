@@ -30,20 +30,19 @@
                                 <th>名前</th>
                                 <th>管理者</th>
                                 <th></th>
-                                <th></th>
                             </tr>
                             <c:forEach var="teacher" items="${teachers}">
                                 <tr>
                                     <td>${teacher.id }</td>
                                     <td>${teacher.name}</td>
-                                    <td class="text-center">
+                                    <td class="text-start">
 										<%-- 管理者フラグがたっている場合「○」それ以外は「×」を表示 --%>
 										<c:choose>
 											<c:when test="${teacher.isAdmin}">
-											                    ○
+											         ○
 											</c:when>
 											<c:otherwise>
-											                    ×
+											         ×
 											</c:otherwise>
 										</c:choose>
 									</td>

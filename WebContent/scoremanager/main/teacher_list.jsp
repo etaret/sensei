@@ -45,7 +45,7 @@
                                 <tr>
                                     <td>${teacher.id }</td>
                                     <td>${teacher.name}</td>
-                                    <td class="text-center">
+                                    <td class="text-start">
 										<%-- 管理者フラグがたっている場合「○」それ以外は「×」を表示 --%>
 										<c:choose>
 											<c:when test="${teacher.isAdmin}">
