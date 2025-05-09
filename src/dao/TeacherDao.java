@@ -203,13 +203,14 @@ public class TeacherDao extends Dao {
 		}
 	}
 
-	public List<Teacher> filterDeleted() throws Exception {
+	public List<Teacher> filterDeleted(School school) throws Exception {
 		List<Teacher> teacherList = new ArrayList<>();
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
 
 		try {
-			statement = connection.prepareStatement("select * from teacher where is_deleted = true");
+			statement = connection.prepareStatement("select * from teacher where is_deleted = true AND school_cd = ?");
+			statement.setString(1, school.getCd());
 			ResultSet resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
