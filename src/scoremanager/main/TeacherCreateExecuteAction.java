@@ -15,8 +15,8 @@ public class TeacherCreateExecuteAction extends Action {
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
         // 変数定義
-        String subject_cd, subject_name;
-        boolean result;
+        String Id, Name, Password, IsAdminStr;
+        boolean IsAdmin, IsDeleted, result;
 
         // セッションの存在確認
         HttpSession session = req.getSession(false);
@@ -37,56 +37,70 @@ public class TeacherCreateExecuteAction extends Action {
         // bean, dao
         Subject subject = new Subject();
         TeacherDao teacherDao = new TeacherDao();
-        Subject existingSubject = null;
+        Teacher existingTeacher = null;
 
         // パラメータの取得
-        subject_cd = req.getParameter("subject_cd");
-        subject_name = req.getParameter("subject_name");
+        Id = req.getParameter("id");
+        Name = req.getParameter("name");
+        Password = req.getParameter("password");
+        IsAdminStr = req.getParameter("isAdmin");
 
         boolean hasError = false;
 
         // 入力チェック
-        if (subject_cd == null || subject_cd.isEmpty()) {
-            req.setAttribute("subject_cd_error", "科目コードが入力されていません。");
-            hasError = true;
-        } else if (subject_cd.length() != 3) {
-            req.setAttribute("subject_cd_error", "科目コードは3文字で入力してください。");
+        if (Id == null || Id.isEmpty()) {
+            req.setAttribute("id_error", "先生コードが入力されていません。");
             hasError = true;
         }
 
-        if (subject_name == null || subject_name.isEmpty()) {
-            req.setAttribute("subject_name_error", "科目名が入力されていません。");
+        if (Name == null || Name.isEmpty()) {
+            req.setAttribute("name_error", "先生名が入力されていません。");
             hasError = true;
         }
 
-        req.setAttribute("cd", subject_cd);
-        req.setAttribute("name", subject_name);
+        if (Password == null || Password.isEmpty()) {
+            req.setAttribute("password_error", "パスワードが入力されていません。");
+            hasError = true;
+        }
+
+        if (IsAdminStr != null && IsAdminStr.equals("true")) {
+        	IsAdmin = true;
+        }else{
+        	IsAdmin = false;
+        }
+
+        req.setAttribute("id", Id);
+        req.setAttribute("name", Name);
+        req.setAttribute("password", Password);
+        req.setAttribute("isAdmin", IsAdmin);
 
         if (hasError) {
-            req.getRequestDispatcher("subject_create.jsp").forward(req, res);
+            req.getRequestDispatcher("teacher_create.jsp").forward(req, res);
             return;
         }
 
         // 重複チェック
         try {
-            existingSubject = teacherDao.get(subject_cd, teacher.getSchool());
+            existingTeacher = teacherDao.get(Id);
         } catch (Exception e) {
-            req.setAttribute("sderror", "データベースエラーが発生しました。もう一度お試しください。");
-            req.getRequestDispatcher("subject_create.jsp").forward(req, res);
+            req.setAttribute("id_error", "データベースエラーが発生しました。もう一度お試しください。");
+            req.getRequestDispatcher("teacher_create.jsp").forward(req, res);
             return;
         }
 
-        if (existingSubject != null) {
-            req.setAttribute("subject_cd_error", "科目コードが重複しています。");
-            req.getRequestDispatcher("subject_create.jsp").forward(req, res);
+        if (existingTeacher != null) {
+            req.setAttribute("id_error", "先生コードが重複しています。");
+            req.getRequestDispatcher("teacher_create.jsp").forward(req, res);
             return;
         }
 
         // 登録処理
-        subject.setCd(subject_cd);
-        subject.setName(subject_name);
-        subject.setSchool(teacher.getSchool());
-        result = teacherDao.save(subject);
+        teacher.setId(Id);
+        teacher.setName(Name);
+        teacher.setPassword(Password);
+        teacher.setIsAdmin(IsAdmin);
+        teacher.setSchool(teacher.getSchool());
+        result = teacherDao.create(teacher);
 
         if (result) {
             req.setAttribute("suc", "登録が完了しました。");
@@ -94,6 +108,6 @@ public class TeacherCreateExecuteAction extends Action {
             req.setAttribute("suc", "登録に失敗しました。内容確認の上もう一度お願いします。");
         }
 
-        req.getRequestDispatcher("subject_create_done.jsp").forward(req, res);
+        req.getRequestDispatcher("teacher_create_done.jsp").forward(req, res);
     }
 }
