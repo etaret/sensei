@@ -20,7 +20,7 @@
 
 			<!-- 復活ボタン -->
 	        <div class="col-auto">
-            <a href="#" class="btn btn-outline-warning btn-sm revival-button">復活</a>
+            <a href="TeacherReturnList.action" class="btn btn-outline-warning btn-sm revival-button">復活</a>
         </div>
 	    </div>
 	</div>
