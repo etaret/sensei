@@ -28,7 +28,7 @@
                                     type="text" required />
                             </c:otherwise>
                         </c:choose>
-                        <%-- 科目コードのエラー表示 --%>
+                        <%-- Idのエラー表示 --%>
                         <c:if test="${not empty id_error}">
                             <p class="mt-2 fw-bold text-warning">${id_error}</p>
                         </c:if>
