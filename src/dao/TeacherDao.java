@@ -136,6 +136,7 @@ public class TeacherDao extends Dao {
 			statement.setString(4, teacher.getSchool().getCd());
 			statement.setBoolean(5, teacher.getIsAdmin());
 			statement.setBoolean(6, teacher.getIsDeleted());
+			statement.executeUpdate();
 			return true;
 		} catch (Exception e) {
 			throw e;

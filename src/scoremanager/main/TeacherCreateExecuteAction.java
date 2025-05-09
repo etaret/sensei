@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bean.Subject;
 import bean.Teacher;
 import dao.TeacherDao;
 import tool.Action;
@@ -35,7 +34,6 @@ public class TeacherCreateExecuteAction extends Action {
         }
 
         // bean, dao
-        Subject subject = new Subject();
         TeacherDao teacherDao = new TeacherDao();
         Teacher existingTeacher = null;
 
@@ -99,8 +97,17 @@ public class TeacherCreateExecuteAction extends Action {
         teacher.setName(Name);
         teacher.setPassword(Password);
         teacher.setIsAdmin(IsAdmin);
-        teacher.setSchool(teacher.getSchool());
+//        teacher.setSchool(teacher.getSchool());
+        teacher.setIsDeleted(false);
         result = teacherDao.create(teacher);
+
+        // デバック
+        System.out.println(teacher.getId());
+        System.out.println(teacher.getName());
+        System.out.println(teacher.getPassword());
+        System.out.println(teacher.getIsAdmin());
+        System.out.println(teacher.getSchool().getCd());
+
 
         if (result) {
             req.setAttribute("suc", "登録が完了しました。");
