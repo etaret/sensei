@@ -129,12 +129,13 @@ public class TeacherDao extends Dao {
 		PreparedStatement statement = null;
 
 		try {
-			statement = connection.prepareStatement("insert into teacher (id, password, name, is_admin, is_deleted) values (?, ?, ?, ?, ?)");
+			statement = connection.prepareStatement("insert into teacher (id, password, name, school_cd, is_admin, is_deleted) values (?, ?, ?, ?, ?, ?)");
 			statement.setString(1, teacher.getId());
 			statement.setString(2, teacher.getPassword());
 			statement.setString(3, teacher.getName());
-			statement.setBoolean(4, teacher.getIsAdmin());
-			statement.setBoolean(5, teacher.getIsDeleted());
+			statement.setString(4, teacher.getSchool().getCd());
+			statement.setBoolean(5, teacher.getIsAdmin());
+			statement.setBoolean(6, teacher.getIsDeleted());
 			return true;
 		} catch (Exception e) {
 			throw e;

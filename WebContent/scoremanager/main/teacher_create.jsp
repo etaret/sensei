@@ -8,55 +8,98 @@
     <c:param name="scripts"></c:param>
 
     <c:param name="content">
-        <h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報登録</h2>
+        <h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">先生登録</h2>
         <div class="col-11 mx-auto">
-            <form action="SubjectCreateExecute.action" method="get">
+            <form action="TeacherCreateExecute.action" method="get">
 
-                <%-- 科目コード入力 --%>
+                <%-- ID入力 --%>
                 <div class="col-12 mb-3">
-                    <label class="form-label">科目コード</label>
+                    <label class="form-label">ID</label>
                     <div>
                         <c:choose>
                             <c:when test="${not empty f1}">
                                 <input class="form-control"
-                                    maxlength="10" name="subject_cd" placeholder="科目コードを入力してください"
-                                    type="text" value="${cd}" required />
+                                    maxlength="10" name="id" placeholder="先生のIDを入力してください"
+                                    type="text" value="${id}" required />
                             </c:when>
                             <c:otherwise>
                                 <input class="form-control"
-                                    maxlength="10" name="subject_cd" placeholder="科目コードを入力してください"
+                                    maxlength="10" name="id" placeholder="先生のIDを入力してください"
                                     type="text" required />
                             </c:otherwise>
                         </c:choose>
                         <%-- 科目コードのエラー表示 --%>
-                        <c:if test="${not empty subject_cd_error}">
-                            <p class="mt-2 fw-bold text-warning">${subject_cd_error}</p>
+                        <c:if test="${not empty id_error}">
+                            <p class="mt-2 fw-bold text-warning">${id_error}</p>
                         </c:if>
                     </div>
                 </div>
 
-                <%-- 科目名入力 --%>
+                <%-- 名前入力 --%>
                 <div class="col-12 mb-3">
-                    <label class="form-label">科目名</label>
+                    <label class="form-label">名前</label>
                     <div>
                         <c:choose>
                             <c:when test="${not empty f2}">
                                 <input class="form-control"
-                                    maxlength="50" name="subject_name" placeholder="科目名を入力してください"
+                                    maxlength="50" name="name" placeholder="名前を入力してください"
                                     type="text" value="${name}" required />
                             </c:when>
                             <c:otherwise>
                                 <input class="form-control"
-                                    maxlength="50" name="subject_name" placeholder="科目名を入力してください"
+                                    maxlength="50" name="name" placeholder="名前を入力してください"
                                     type="text" required />
                             </c:otherwise>
                         </c:choose>
                         <%-- 科目名のエラー表示 --%>
-                        <c:if test="${not empty subject_name_error}">
-                            <p class="mt-2 fw-bold text-warning">${subject_name_error}</p>
+                        <c:if test="${not empty name_error}">
+                            <p class="mt-2 fw-bold text-warning">${name_error}</p>
                         </c:if>
                     </div>
                 </div>
+
+                <%-- パスワード入力 --%>
+                <div class="col-12 mb-3">
+                    <label class="form-label">パスワード</label>
+                    <div>
+                        <c:choose>
+                            <c:when test="${not empty f1}">
+                                <input class="form-control"
+                                    maxlength="20" name="password" placeholder="パスワードを入力してください"
+                                    type="text" value="${cd}" required />
+                            </c:when>
+                            <c:otherwise>
+                                <input class="form-control"
+                                    maxlength="20" name="password" placeholder="パスワードを入力してください"
+                                    type="text" required />
+                            </c:otherwise>
+                        </c:choose>
+                        <%-- 科目コードのエラー表示 --%>
+                        <c:if test="${not empty password_error}">
+                            <p class="mt-2 fw-bold text-warning">${password_error}</p>
+                        </c:if>
+                    </div>
+                </div>
+
+                <%-- 管理者フラグのチェックボックス --%>
+				<div class="col-12 mb-3">
+				    <label class="form-label">管理者</label>
+				    <div class="form-check">
+				        <input class="form-check-input" type="checkbox"
+				               id="isAdmin" name="isAdmin" value="true"
+				               <c:if test="${f1 and adminFlag}">checked</c:if> />
+				        <label class="form-check-label" for="isAdmin">
+				            管理者として登録する
+				        </label>
+				    </div>
+				    <%-- 管理者チェックのエラー表示（あれば） --%>
+				    <c:if test="${not empty admin_error}">
+				        <p class="mt-2 fw-bold text-warning">${admin_error}</p>
+				    </c:if>
+				</div>
+
+
+
 
                 <%-- その他のエラー出力 --%>
                 <c:if test="${not empty sderror}">
@@ -71,7 +114,7 @@
 
             <%-- 戻るリンク --%>
             <div class="col-12 mb-3">
-                <a href="SubjectList.action">戻る</a>
+                <a href="TeacherList.action">戻る</a>
             </div>
         </div>
     </c:param>
