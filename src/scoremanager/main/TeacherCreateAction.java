@@ -13,6 +13,13 @@ public class TeacherCreateAction extends Action {
         HttpServletRequest req, HttpServletResponse res
     ) throws Exception {
 
+        HttpSession session = req.getSession(false);
+        Teacher teacher = (Teacher) session.getAttribute("user");
+        if (teacher.getIsAdmin() == false) {
+            req.getRequestDispatcher("teacher_permission_denied.jsp").forward(req, res);
+            return;
+        }
+
         req.getRequestDispatcher("teacher_create.jsp").forward(req, res);
     }
 

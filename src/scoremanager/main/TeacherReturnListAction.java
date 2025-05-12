@@ -18,6 +18,10 @@ public class TeacherReturnListAction extends Action {
 		HttpSession session = req.getSession(); //セッション
 		// セッションからid取得
 		Teacher teacher = (Teacher)session.getAttribute("user");
+		if (teacher.getIsAdmin() == false) {
+			req.getRequestDispatcher("teacher_permission_denied.jsp").forward(req, res);
+			return;
+		}
 
 		// local変数宣言
 		List<Teacher> teachers = null; // ★ 科目リスト

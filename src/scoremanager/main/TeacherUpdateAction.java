@@ -20,6 +20,10 @@ public class TeacherUpdateAction extends Action {
         // セッションの取得
         HttpSession session = req.getSession(false);
         Teacher teacher = (Teacher) session.getAttribute("user");
+        if (teacher.getIsAdmin() == false) {
+            req.getRequestDispatcher("teacher_permission_denied.jsp").forward(req, res);
+            return;
+        }
 
         // パラメータの取得
         String teacher_id = req.getParameter("teachers_id");
