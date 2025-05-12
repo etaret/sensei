@@ -47,7 +47,7 @@
 										</c:choose>
 									</td>
                                     <td>
-                                        <a href="TeachersUpdate.action?teachers_id=${teacher.id}"
+                                        <a href="TeacherReviveExecute.action?teachers_id=${teacher.id}"
                                            class="btn btn-outline-warning btn-sm">復活</a>
                                     </td>
 
