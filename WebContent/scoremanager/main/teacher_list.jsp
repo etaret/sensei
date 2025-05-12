@@ -62,7 +62,7 @@
                                     </td>
                                     <td>
                                         <a href="TeacherDelete.action?teachers_id=${teacher.id}"
-                                           onclick="return confirm('本当に削除してもよろしいですか？');"
+
                                            class="btn btn-outline-danger btn-sm">削除</a>
                                     </td>
                                 </tr>
