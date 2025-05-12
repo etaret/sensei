@@ -70,8 +70,8 @@
                                     </td>
                                     <td>
                                         <a href="ClassDelete.action?class_num=${clazz.class_num}&c_count=${clazz.c_count}"
-                                           onclick="return confirm('本当に削除してもよろしいですか？');"
-                                           class="btn btn-outline-danger btn-sm">削除</a>
+										   onclick="return confirmSingleDeletion('${clazz.class_num}', '${clazz.c_count}');"
+										   class="btn btn-outline-danger btn-sm">削除</a>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -112,26 +112,55 @@
 
             function validateDeletion() {
                 var checkboxes = document.getElementsByName('selectedClasses');
-                var isChecked = false;
+                var selected = [];
 
-                // チェックボックスが選択されているか確認
+                // 選択されたクラスを整形して配列に格納
                 for (var i = 0; i < checkboxes.length; i++) {
                     if (checkboxes[i].checked) {
-                        isChecked = true;
-                        break;
+                        var parts = checkboxes[i].value.split(":"); // parts[0] = class_num, parts[1] = c_count
+                        selected.push("クラス番号: " + parts[0] + "（在籍数: " + parts[1] + "）");
                     }
                 }
 
-                if (!isChecked) {
-                    // エラーメッセージを更新
+                if (selected.length === 0) {
                     document.getElementById('error-message').innerHTML = "一括削除を実行するには、少なくとも1つのクラスを選択してください。";
                     document.getElementById('error-message').classList.remove('d-none');
-                    return false; // 削除確認を防ぐ
+                    return false;
                 }
 
-                // チェックボックスが選択されていれば削除確認メッセージを表示
-                return confirm('本当に削除してもよろしいですか？');
+                // 「削除します」と入力する確認ダイアログ
+                var message = "次のクラスを削除します。\n\n" + selected.join("\n") + "\n\n続行するには「削除します」と入力してください。";
+                var confirmation = prompt(message);
+
+                if (confirmation === null) {
+                    return false;
+                }
+
+                if (confirmation.trim() !== "削除します") {
+                    alert("入力が正しくありません。削除を中止しました。");
+                    return false;
+                }
+
+                return true;
             }
+
+            function confirmSingleDeletion(classNum, cCount) {
+                var message = "クラス番号: " + classNum + "（在籍数: " + cCount + "）を削除します。\n続行するには「削除します」と入力してください。";
+                var confirmation = prompt(message);
+
+                if (confirmation === null) {
+                    return false; // キャンセルされた
+                }
+
+                if (confirmation.trim() !== "削除します") {
+                    alert("入力が正しくありません。削除を中止しました。");
+                    return false;
+                }
+
+                return true;
+            }
+
+
         </script>
 
     </c:param>

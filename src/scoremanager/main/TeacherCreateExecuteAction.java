@@ -15,7 +15,7 @@ public class TeacherCreateExecuteAction extends Action {
 
         // 変数定義
         String Id, Name, Password, IsAdminStr;
-        boolean IsAdmin, IsDeleted, result;
+        boolean IsAdmin, result;
 
         // セッションの存在確認
         HttpSession session = req.getSession(false);
@@ -93,20 +93,21 @@ public class TeacherCreateExecuteAction extends Action {
         }
 
         // 登録処理
-        teacher.setId(Id);
-        teacher.setName(Name);
-        teacher.setPassword(Password);
-        teacher.setIsAdmin(IsAdmin);
-//        teacher.setSchool(teacher.getSchool());
-        teacher.setIsDeleted(false);
-        result = teacherDao.create(teacher);
+        Teacher newteacher = new Teacher();
+        newteacher.setId(Id);
+        newteacher.setName(Name);
+        newteacher.setPassword(Password);
+        newteacher.setIsAdmin(IsAdmin);
+        newteacher.setSchool(teacher.getSchool());
+        newteacher.setIsDeleted(false);
+        result = teacherDao.create(newteacher);
 
         // デバック
-        System.out.println(teacher.getId());
-        System.out.println(teacher.getName());
-        System.out.println(teacher.getPassword());
-        System.out.println(teacher.getIsAdmin());
-        System.out.println(teacher.getSchool().getCd());
+//        System.out.println(newteacher.getId());
+//        System.out.println(newteacher.getName());
+//        System.out.println(newteacher.getPassword());
+//        System.out.println(newteacher.getIsAdmin());
+//        System.out.println(newteacher.getSchool().getCd());
 
 
         if (result) {
