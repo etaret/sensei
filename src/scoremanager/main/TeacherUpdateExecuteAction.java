@@ -3,6 +3,7 @@ package scoremanager.main;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 import bean.School;
 import bean.Teacher;
@@ -23,19 +24,22 @@ public class TeacherUpdateExecuteAction extends Action {
         String name = req.getParameter("name");
         String password = req.getParameter("password");
         String schoolCd = req.getParameter("school_cd");
-        String isAdminStr = req.getParameter("is_admin"); // "on" または null
+        String isAdminStr = req.getParameter("is_admin");
 
         // DAOの用意
         TeacherDao teacherDao = new TeacherDao();
         SchoolDao schoolDao = new SchoolDao();
+        List<School> school_list = schoolDao.getList();
 
-        // 更新対象の教員情報を取得
         Teacher teacherToUpdate = teacherDao.get(id);
 
         if (teacherToUpdate == null) {
             req.setAttribute("tcherror", "指定された教員は存在しません。");
             req.setAttribute("id", id);
             req.setAttribute("name", name);
+            req.setAttribute("password", password);
+            req.setAttribute("school_list", school_list);
+            req.setAttribute("is_admin", isAdminStr);
             req.getRequestDispatcher("teacher_update.jsp").forward(req, res);
             return;
         }
@@ -46,13 +50,17 @@ public class TeacherUpdateExecuteAction extends Action {
         }
 
         School school = schoolDao.get(schoolCd);
-        if (school != null) {
-            teacherToUpdate.setSchool(school);
+        if (school == null) {
             req.setAttribute("tcherror", "指定された学校コードが存在しません。");
             req.setAttribute("id", id);
             req.setAttribute("name", name);
+            req.setAttribute("school_list", school_list);
+            req.setAttribute("current_school_cd", schoolCd);
+            req.setAttribute("is_admin", isAdminStr);
             req.getRequestDispatcher("teacher_update.jsp").forward(req, res);
             return;
+        } else {
+            teacherToUpdate.setSchool(school);
         }
 
         boolean isAdmin = "on".equals(isAdminStr);
@@ -64,9 +72,12 @@ public class TeacherUpdateExecuteAction extends Action {
             req.setAttribute("tcherror", "教員情報の変更に失敗しました。");
             req.setAttribute("id", id);
             req.setAttribute("name", name);
+            req.setAttribute("password", password);
+            req.setAttribute("school_list", school_list);
+            req.setAttribute("is_admin", isAdminStr);
             req.getRequestDispatcher("teacher_update.jsp").forward(req, res);
             return;
         }
-        res.sendRedirect("TeacherList.action");
+        req.getRequestDispatcher("teacher_update_done.jsp").forward(req, res);
     }
 }
