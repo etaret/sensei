@@ -94,6 +94,9 @@ public class TeacherDao extends Dao {
 		if (teacher == null || !teacher.getPassword().equals(password)) {
 			return null;
 		}
+		if (teacher.getIsDeleted() == true) {
+			return null;
+		}
 		return teacher;
 	}
 
