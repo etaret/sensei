@@ -38,22 +38,23 @@
 					<a href="ClassList.action">クラス管理</a>
 				</div>
 			</div>
-			<c:if test="${user.getIsAdmin()}">
-				<h2>CSVファイルをアップロードしてください</h2>
-			    <form action="upload" method="post" enctype="multipart/form-data">
-			        <input type="file" name="csvFile" accept=".csv" required />
-			        <label>項目を選んでください：</label>
-			        <select name="grade">
-			            <option value="1年">学生情報</option>
-			            <option value="4年">科目情報</option>
-			            <option value="4年">テスト情報</option>
-			            <option value="2年">クラス情報</option>
+
+			<h2>CSVファイルをアップロードしてください</h2>
+		    <form action="upload" method="post" enctype="multipart/form-data">
+		        <input type="file" name="csvFile" accept=".csv" required />
+		        <label>項目を選んでください：</label>
+		        <select name="grade">
+		            <option value="1年">学生情報</option>
+		            <option value="4年">科目情報</option>
+		            <option value="4年">テスト情報</option>
+		            <option value="2年">クラス情報</option>
+		            <c:if test="${user.getIsAdmin()}">
 			            <option value="3年">先生情報</option>
 			            <option value="4年">学校情報</option>
-			        </select>
-			        <input type="submit" value="アップロード" />
-			    </form>
-			</c:if>
+			        </c:if>
+		        </select>
+		        <input type="submit" value="アップロード" />
+		    </form>
 		</section>
 	</c:param>
 </c:import>
