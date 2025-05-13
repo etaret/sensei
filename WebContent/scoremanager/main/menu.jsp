@@ -40,17 +40,17 @@
 			</div>
 
 			<h2>CSVファイルをアップロードしてください</h2>
-		    <form action="upload" method="post" enctype="multipart/form-data">
+		    <form action="CsvUpload.action" method="post" enctype="multipart/form-data">
 		        <input type="file" name="csvFile" accept=".csv" required />
 		        <label>項目を選んでください：</label>
 		        <select name="grade">
-		            <option value="1年">学生情報</option>
-		            <option value="4年">科目情報</option>
-		            <option value="4年">テスト情報</option>
-		            <option value="2年">クラス情報</option>
+		            <option value="学生">学生情報</option>
+		            <option value="科目">科目情報</option>
+		            <option value="テスト">テスト情報</option>
+		            <option value="クラス">クラス情報</option>
 		            <c:if test="${user.getIsAdmin()}">
-			            <option value="3年">先生情報</option>
-			            <option value="4年">学校情報</option>
+			            <option value="先生">先生情報</option>
+			            <option value="学校">学校情報</option>
 			        </c:if>
 		        </select>
 		        <input type="submit" value="アップロード" />
