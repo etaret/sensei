@@ -43,14 +43,13 @@
 		    <form action="CsvUpload.action" method="post" enctype="multipart/form-data">
 		        <input type="file" name="csvFile" accept=".csv" required />
 		        <label>項目を選んでください：</label>
-		        <select name="grade">
+		        <select name="type">
 		            <option value="学生">学生情報</option>
 		            <option value="科目">科目情報</option>
 		            <option value="テスト">テスト情報</option>
 		            <option value="クラス">クラス情報</option>
 		            <c:if test="${user.getIsAdmin()}">
 			            <option value="先生">先生情報</option>
-			            <option value="学校">学校情報</option>
 			        </c:if>
 		        </select>
 		        <input type="submit" value="アップロード" />
