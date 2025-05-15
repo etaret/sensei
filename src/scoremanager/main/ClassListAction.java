@@ -21,16 +21,16 @@ public class ClassListAction extends Action {
 		Teacher teacher = (Teacher)session.getAttribute("user");
 
 		// 変数宣言
-		List<ClassNum> classes = null;
+		List<ClassNum> studs = null;
 
 		//bean,dao
 		StudentDao sDao = new StudentDao();
 
 		// データ取得
-		classes = sDao.class_count(teacher.getSchool());
+		studs = sDao.student_count(teacher.getSchool());
 
 		// レスポンス値セット
-		req.setAttribute("classes", classes);
+		req.setAttribute("studs", studs);
 
 		// JSPへフォワード
 		req.getRequestDispatcher("class_list.jsp").forward(req, res);

@@ -41,6 +41,12 @@
 						</c:forEach>
 					</table>
 				</c:when>
+				<c:otherwise>
+					<div class="alert alert-light border border-secondary d-flex align-items-center mt-4" role="alert" style="font-size: 1.1rem;">
+						<i class="bi bi-person-x-fill text-secondary me-2" style="font-size: 1.5rem;"></i>
+						<span>在学中の生徒は現在存在しません。</span>
+					</div>
+				</c:otherwise>
 			</c:choose>
 			<c:choose>
 				<c:when test="${graduatedStudents.size()>0}">
@@ -71,6 +77,12 @@
 						</c:forEach>
 					</table>
 				</c:when>
+				<c:otherwise>
+					<div class="alert alert-light border border-secondary d-flex align-items-center mt-4" role="alert" style="font-size: 1.1rem;">
+						<i class="bi bi-person-x-fill text-secondary me-2" style="font-size: 1.5rem;"></i>
+						<span>退学済みの生徒は現在存在しません。</span>
+					</div>
+				</c:otherwise>
 			</c:choose>
 			<div class="row mt-3">
 			    <!-- 戻るボタン（左側） -->

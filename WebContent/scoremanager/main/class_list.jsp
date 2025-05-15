@@ -15,7 +15,7 @@
                 <div style="background-image: linear-gradient(to right, #000000, #FFFFFF); height: 2px; position: absolute; bottom: 9px; left: 0; right: 0; z-index: 0;"></div>
             </div>
             <c:choose>
-                <c:when test="${classes.size()>0}">
+                <c:when test="${studs.size()>0}">
                     <form method="post" onsubmit="return validateSelection();">
                         <!-- エラーメッセージ表示部分 -->
                         <div id="error-message" class="alert alert-danger d-none" role="alert" style="max-width: 500px; margin: 0 auto 15px;">
@@ -43,7 +43,7 @@
                                    onclick="return validateDeletion();" />
                         </div>
 
-                        <div>表示数：${classes.size()}件</div>
+                        <div>表示数：${studs.size()}件</div>
                         <table class="table table-hover">
                             <tr>
                                 <th>
@@ -63,25 +63,25 @@
                                 <th></th>
                                 <th></th>
                             </tr>
-                            <c:forEach var="clazz" items="${classes}">
+                            <c:forEach var="studs" items="${studs}">
                                 <tr>
                                     <td>
-                                        <input type="checkbox" name="selectedClasses" value="${clazz.class_num}:${clazz.c_count}" />
+                                        <input type="checkbox" name="selectedClasses" value="${studs.class_num}:${studs.c_count}" />
                                     </td>
                                     <td>
-                                        <a href="ClassStudentList.action?class_num=${clazz.class_num}"
+                                        <a href="ClassStudentList.action?class_num=${studs.class_num}"
                                            class="text-decoration-none text-dark">
-                                           ${clazz.class_num}
+                                           ${studs.class_num}
                                         </a>
                                     </td>
-                                    <td>${clazz.c_count }</td>
+                                    <td>${studs.c_count }</td>
                                     <td>
-                                        <a href="ClassUpdate.action?class_num=${clazz.class_num}&c_count=${clazz.c_count}"
+                                        <a href="ClassUpdate.action?class_num=${studs.class_num}&c_count=${studs.c_count}"
                                            class="btn btn-outline-warning btn-sm">更新</a>
                                     </td>
                                     <td>
-                                        <a href="ClassDelete.action?class_num=${clazz.class_num}&c_count=${clazz.c_count}"
-										   onclick="return confirmSingleDeletion('${clazz.class_num}', '${clazz.c_count}');"
+                                        <a href="ClassDelete.action?class_num=${studs.class_num}&c_count=${studs.c_count}"
+										   onclick="return confirmSingleDeletion('${studs.class_num}', '${studs.c_count}');"
 										   class="btn btn-outline-danger btn-sm">削除</a>
                                     </td>
                                 </tr>
@@ -140,7 +140,7 @@
                 }
 
                 // 「削除します」と入力する確認ダイアログ
-                var message = "次のクラスを削除します。\n\n" + selected.join("\n") + "\n\n続行するには「削除します」と入力してください。";
+                var message = "次のクラスを削除します。\n\n" + selected.join("\n") + "\n\n続行するには「削除します」と入力してください。\n※ 退学者がいる場合は退学者も一緒に削除されます";
                 var confirmation = prompt(message);
 
                 if (confirmation === null) {
@@ -156,7 +156,7 @@
             }
 
             function confirmSingleDeletion(classNum, cCount) {
-                var message = "クラス番号: " + classNum + "（在籍数: " + cCount + "）を削除します。\n続行するには「削除します」と入力してください。";
+                var message = "クラス番号: " + classNum + "（在籍数: " + cCount + "）を削除します。\n続行するには「削除します」と入力してください。\n※ 退学者がいる場合は退学者も一緒に削除されます";
                 var confirmation = prompt(message);
 
                 if (confirmation === null) {

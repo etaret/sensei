@@ -18,7 +18,7 @@ public class ClassDeleteAction extends Action {
         // 変数定義
         String class_num, error = null;
         int c_count;
-        boolean deci = false;
+        boolean deci = false, sdeci = false;
         // セッション
         HttpSession session = req.getSession(false);
         Teacher teacher = (Teacher)session.getAttribute("user");
@@ -43,13 +43,24 @@ public class ClassDeleteAction extends Action {
 
             // db処理結果取得
             deci = cNumDao.delete(cNum);
+            sdeci = cNumDao.student_delete(cNum);
         }
 
         // 結果判定、文字登録
-        if (deci) {
-            req.setAttribute("suc", "削除が完了しました。");
+        if (sdeci) {
+            if (deci) {
+                req.setAttribute("suc", "削除が完了しました。このクラスの退学者も削除されました");
+            } else {
+                req.setAttribute("suc", "削除に失敗しました。内容確認の上もう一度お願いします。");
+
+            }
         } else {
-            req.setAttribute("suc", "削除に失敗しました。内容確認の上もう一度お願いします。");
+        	if (deci) {
+                req.setAttribute("suc", "削除が完了しました。");
+            } else {
+                req.setAttribute("suc", "削除に失敗しました。内容確認の上もう一度お願いします。");
+
+            }
         }
 
         req.getRequestDispatcher("class_delete_done.jsp").forward(req, res);

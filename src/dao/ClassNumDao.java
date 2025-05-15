@@ -172,6 +172,45 @@ public class ClassNumDao extends Dao{
 		}
 	}
 
+	// クラス削除時の退学済み学生削除
+		public boolean student_delete(ClassNum classNum) throws Exception {
+			Connection connection = getConnection();
+			PreparedStatement statement = null;
+			// 実行件数
+			int count = 0;
+
+			try {
+				statement = connection.prepareStatement(
+						"DELETE FROM student WHERE school_cd = ? AND class_num =  ? AND is_attend = false");
+				statement.setString(1, classNum.getSchool().getCd());
+				statement.setString(2, classNum.getClass_num());
+				count = statement.executeUpdate();
+
+			} catch (Exception e) {
+				throw e;
+			}  finally {
+			    if (statement != null) {
+			        try {
+			            statement.close();
+			        } catch (SQLException sqle) {
+			            throw sqle;
+			        }
+			    }
+			    if (connection != null) {
+			        try {
+			            connection.close();
+			        } catch (SQLException sqle) {
+			            throw sqle;
+			        }
+			    }
+			}
+			if (count > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
 	// 変更
 	public boolean update(ClassNum classNum) throws Exception {
 	    Connection connection = getConnection();
@@ -336,6 +375,8 @@ public class ClassNumDao extends Dao{
 		return true; // 仮
 	}
 
+
+	// 全削除
 	public boolean alldelete() throws Exception {
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
@@ -373,7 +414,7 @@ public class ClassNumDao extends Dao{
 		return count > 0;
 	}
 
-	// 学生削除
+	// 学生退学処理
 	public boolean st_expel(Student student) throws Exception {
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
@@ -454,6 +495,8 @@ public class ClassNumDao extends Dao{
 			return false;
 		}
 	}
+
+
 
 
 

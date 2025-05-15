@@ -309,8 +309,44 @@ public class StudentDao extends Dao{
 		return list;
 	}
 
-	// クラスごとの学生数付き取得
-	public List<ClassNum> class_count(School school)  throws Exception {
+//	// クラスごとの学生数付き取得
+//	public List<ClassNum> class_count(School school)  throws Exception {
+//		// インスタンス初期化
+//		List<ClassNum> c_list = new ArrayList<>();
+//		Connection connection = getConnection();
+//		PreparedStatement statement = null;
+//
+//		try {
+//			statement = connection.prepareStatement("SELECT class_num.class_num, Count(student.no) AS c_count FROM class_num LEFT JOIN student "
+//													+ "ON class_num.class_num = student.class_num AND class_num.school_cd = student.school_cd "
+//													+ "WHERE class_num.school_cd=? GROUP BY class_num.class_num ORDER BY class_num.class_num");
+//			statement.setString(1,school.getCd() );
+//			ResultSet rSet = statement.executeQuery();
+//			// セット
+//			c_list = cFilter(rSet);
+//		} catch (Exception e) {
+//			throw e;
+//		} finally {
+//			 if (statement != null) {
+//	            try {
+//	                statement.close();
+//	            } catch (SQLException sqle) {
+//	                throw sqle;
+//	            }
+//	        }
+//	        if (connection != null) {
+//	            try {
+//	                connection.close();
+//	            } catch (SQLException sqle) {
+//	                throw sqle;
+//	            }
+//	        }
+//		}
+//		return c_list;
+//	}
+
+	// クラスごとの学生数付き取得　在学者のみ
+	public List<ClassNum> student_count(School school)  throws Exception {
 		// インスタンス初期化
 		List<ClassNum> c_list = new ArrayList<>();
 		Connection connection = getConnection();
@@ -319,7 +355,8 @@ public class StudentDao extends Dao{
 		try {
 			statement = connection.prepareStatement("SELECT class_num.class_num, Count(student.no) AS c_count FROM class_num LEFT JOIN student "
 													+ "ON class_num.class_num = student.class_num AND class_num.school_cd = student.school_cd "
-													+ "WHERE class_num.school_cd=? GROUP BY class_num.class_num ORDER BY class_num.class_num");
+													+ "AND student.is_attend = true WHERE class_num.school_cd=? "
+													+ "GROUP BY class_num.class_num ORDER BY class_num.class_num");
 			statement.setString(1,school.getCd() );
 			ResultSet rSet = statement.executeQuery();
 			// セット
