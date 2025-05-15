@@ -124,6 +124,9 @@ public class TeacherDao extends Dao {
 			if (statement != null) {
 				statement.close();
 			}
+			if (connection != null) {
+				connection.close();
+			}
 		}
 		return teacherList;
 	}
@@ -148,6 +151,9 @@ public class TeacherDao extends Dao {
 			if (statement != null) {
 				statement.close();
 			}
+			if (connection != null) {
+				connection.close();
+			}
 		}
 	}
 
@@ -169,6 +175,9 @@ public class TeacherDao extends Dao {
 		} finally {
 			if (statement != null) {
 				statement.close();
+			}
+			if (connection != null) {
+				connection.close();
 			}
 		}
 	}
@@ -205,6 +214,9 @@ public class TeacherDao extends Dao {
 		} finally {
 			if (statement != null) {
 				statement.close();
+			}
+			if (connection != null) {
+				connection.close();
 			}
 		}
 	}
