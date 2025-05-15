@@ -9,7 +9,7 @@
 	<c:param name="content">
 		<div class="text-container position-relative w-100">
 		    <h2 class="h3 mb-3 fw-normal py-2 px-4 bg-white position-relative d-inline-block ms-3">
-		        学生削除
+				${title}
 		    </h2>
 		    <div style="background-image: linear-gradient(to right, #000000, #FFFFFF); height: 2px; position: absolute; bottom: 9px; left: 0; right: 0; z-index: 0;"></div>
 		</div>

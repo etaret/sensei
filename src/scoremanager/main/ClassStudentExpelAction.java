@@ -10,7 +10,7 @@ import bean.Teacher;
 import dao.ClassNumDao;
 import tool.Action;
 
-public class ClassStudentDeleteAction extends Action {
+public class ClassStudentExpelAction extends Action {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
@@ -35,16 +35,16 @@ public class ClassStudentDeleteAction extends Action {
         stu.setSchool(teacher.getSchool());
 
         // db処理結果取得
-        deci = cNumDao.st_delete(stu);
+        deci = cNumDao.st_expel(stu);
 
-     // 処理のサブタイトル
-        req.setAttribute("title", "学生削除処理");
+        // 処理のサブタイトル
+        req.setAttribute("title", "学生退学処理");
 
         // 結果判定、文字登録
         if (deci) {
-            req.setAttribute("suc", "削除が完了しました。");
+            req.setAttribute("suc", "退学処理が完了しました。");
         } else {
-            req.setAttribute("suc", "削除に失敗しました。内容確認の上もう一度お願いします。");
+            req.setAttribute("suc", "退学処理に失敗しました。内容確認の上もう一度お願いします。");
         }
 
         req.getRequestDispatcher("class_student_done.jsp").forward(req, res);

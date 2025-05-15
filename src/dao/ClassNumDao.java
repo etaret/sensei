@@ -374,45 +374,86 @@ public class ClassNumDao extends Dao{
 	}
 
 	// 学生削除
-		public boolean st_delete(Student student) throws Exception {
-			Connection connection = getConnection();
-			PreparedStatement statement = null;
-			// 実行件数
-			int count = 0;
+	public boolean st_expel(Student student) throws Exception {
+		Connection connection = getConnection();
+		PreparedStatement statement = null;
+		// 実行件数
+		int count = 0;
 
-			try {
-				statement = connection.prepareStatement(
-						"DELETE FROM student WHERE school_cd = ? AND class_num =  ? AND no = ?");
-				statement.setString(1, student.getSchool().getCd());
-				statement.setString(2, student.getClassNum());
-				statement.setString(3, student.getNo());
+		try {
+			statement = connection.prepareStatement(
+					"UPDATE student SET is_attend = false WHERE school_cd = ? AND class_num =  ? AND no = ?");
+			statement.setString(1, student.getSchool().getCd());
+			statement.setString(2, student.getClassNum());
+			statement.setString(3, student.getNo());
 
-				count = statement.executeUpdate();
+			count = statement.executeUpdate();
 
-			} catch (Exception e) {
-				throw e;
-			}  finally {
-			    if (statement != null) {
-			        try {
-			            statement.close();
-			        } catch (SQLException sqle) {
-			            throw sqle;
-			        }
-			    }
-			    if (connection != null) {
-			        try {
-			            connection.close();
-			        } catch (SQLException sqle) {
-			            throw sqle;
-			        }
-			    }
-			}
-			if (count > 0) {
-				return true;
-			} else {
-				return false;
-			}
+		} catch (Exception e) {
+			throw e;
+		}  finally {
+		    if (statement != null) {
+		        try {
+		            statement.close();
+		        } catch (SQLException sqle) {
+		            throw sqle;
+		        }
+		    }
+		    if (connection != null) {
+		        try {
+		            connection.close();
+		        } catch (SQLException sqle) {
+		            throw sqle;
+		        }
+		    }
 		}
+		if (count > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// 学生削除
+	public boolean st_delete(Student student) throws Exception {
+		Connection connection = getConnection();
+		PreparedStatement statement = null;
+		// 実行件数
+		int count = 0;
+
+		try {
+			statement = connection.prepareStatement(
+					"DELETE FROM student WHERE school_cd = ? AND class_num =  ? AND no = ?");
+			statement.setString(1, student.getSchool().getCd());
+			statement.setString(2, student.getClassNum());
+			statement.setString(3, student.getNo());
+
+			count = statement.executeUpdate();
+
+		} catch (Exception e) {
+			throw e;
+		}  finally {
+		    if (statement != null) {
+		        try {
+		            statement.close();
+		        } catch (SQLException sqle) {
+		            throw sqle;
+		        }
+		    }
+		    if (connection != null) {
+		        try {
+		            connection.close();
+		        } catch (SQLException sqle) {
+		            throw sqle;
+		        }
+		    }
+		}
+		if (count > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 
 

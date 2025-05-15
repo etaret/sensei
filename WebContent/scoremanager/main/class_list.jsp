@@ -46,7 +46,18 @@
                         <div>表示数：${classes.size()}件</div>
                         <table class="table table-hover">
                             <tr>
-                                <th></th>
+                                <th>
+								    <div class="d-flex align-items-center">
+									    <label for="checkAllBox" class="me-2 mb-0">
+									        All
+									    </label>
+									    <div class="form-check form-switch">
+									        <input class="form-check-input" type="checkbox" role="switch" id="checkAllBox" onclick="toggleCheckboxes()" />
+									        <label class="form-check-label" for="checkAllBox"></label>
+									    </div>
+									</div>
+
+								</th>
                                 <th>クラス番号</th>
                                 <th>在籍数</th>
                                 <th></th>
@@ -158,6 +169,18 @@
                 }
 
                 return true;
+            }
+
+            var allChecked = false;
+
+            function toggleCheckboxes() {
+                var checkboxes = document.getElementsByName('selectedClasses');
+                var checkAll = document.getElementById('checkAllBox').checked;
+                var label = document.querySelector('label[for="checkAllBox"]');
+
+                for (var i = 0; i < checkboxes.length; i++) {
+                    checkboxes[i].checked = checkAll;
+                }
             }
 
 

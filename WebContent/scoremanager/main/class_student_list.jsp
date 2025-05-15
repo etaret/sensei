@@ -28,16 +28,16 @@
 							<th></th>
 						</tr>
 						<c:forEach var="astuzz" items="${activeStudents}">
-							<tr>
-								<td>${astuzz.no }</td>
-								<td>${astuzz.name }</td>
-								<td>
-									<%-- 削除確認付き --%>
-									<a href="ClassStudentDelete.action?student_no=${astuzz.no}&class_num=${astuzz.classNum}"
-									onclick="return confirm('本当に削除してもよろしいですか？');"
-									class="btn btn-outline-danger btn-sm">削除</a>
-								</td>
-							</tr>
+						    <tr>
+						        <td>${astuzz.no }</td>
+						        <td>${astuzz.name }</td>
+						        <td>
+						            <!-- 退学確認付きのリンク -->
+						            <a href="ClassStudentExpel.action?student_no=${astuzz.no}&class_num=${astuzz.classNum}"
+						               onclick="return confirmStudentWithdrawal('${astuzz.no}', '${astuzz.name}');"
+						               class="btn btn-outline-danger btn-sm">退学</a>
+						        </td>
+						    </tr>
 						</c:forEach>
 					</table>
 				</c:when>
@@ -58,16 +58,16 @@
 							<th></th>
 						</tr>
 						<c:forEach var="gstuzz" items="${graduatedStudents}">
-							<tr>
-								<td>${gstuzz.no }</td>
-								<td>${gstuzz.name }</td>
-								<td>
-									<%-- 削除確認付き --%>
-									<a href="ClassStudentDelete.action?student_no=${gstuzz.no}&class_num=${gstuzz.classNum}"
-									onclick="return confirm('本当に削除してもよろしいですか？');"
-									class="btn btn-outline-danger btn-sm">削除</a>
-								</td>
-							</tr>
+						    <tr>
+						        <td>${gstuzz.no }</td>
+						        <td>${gstuzz.name }</td>
+						        <td>
+						            <!-- 削除確認付きのリンクに変更 -->
+						            <a href="ClassStudentDelete.action?student_no=${gstuzz.no}&class_num=${gstuzz.classNum}"
+						               onclick="return confirmSingleDeletion('${gstuzz.no}', '${gstuzz.name}');"
+						               class="btn btn-outline-danger btn-sm">削除</a>
+						        </td>
+						    </tr>
 						</c:forEach>
 					</table>
 				</c:when>
@@ -86,6 +86,41 @@
 			    </div>
 			</div>
 		</section>
+		<script>
+			// 削除確認用の関数
+		    function confirmSingleDeletion(studentNo, studentName) {
+		        var message = "学生番号: " + studentNo + " 名前: " + studentName + "\n   をこのクラスから削除します。\n続行するには「削除します」と入力してください。";
+		        var confirmation = prompt(message);
+
+		        if (confirmation === null) {
+		            return false; // キャンセルされた
+		        }
+
+		        if (confirmation.trim() !== "削除します") {
+		            alert("入力が正しくありません。削除を中止しました。");
+		            return false;
+		        }
+
+		        return true;
+		    }
+
+		 	// 退学確認用の関数
+		    function confirmStudentWithdrawal(studentNo, studentName) {
+		        var message = "学生番号: " + studentNo + " 名前: " + studentName + "\n   をこのクラスから退学させます。\n続行するには「退学します」と入力してください。";
+		        var confirmation = prompt(message);
+
+		        if (confirmation === null) {
+		            return false; // キャンセルされた
+		        }
+
+		        if (confirmation.trim() !== "退学します") {
+		            alert("入力が正しくありません。退学処理を中止しました。");
+		            return false;
+		        }
+
+		        return true;
+		    }
+		</script>
 	</c:param>
 </c:import>
 

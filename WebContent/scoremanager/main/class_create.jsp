@@ -24,11 +24,11 @@
 					<div>
 						<c:choose>
 							<c:when test="${not empty f1}">
-								<input class="form-control" maxlength="10" name="class_num"
+								<input class="form-control" maxlength="3" name="class_num"
 									placeholder="クラス番号を入力してください" type="text" value="${f1}" required />
 							</c:when>
 							<c:otherwise>
-								<input class="form-control" maxlength="10" name="class_num"
+								<input class="form-control" maxlength="3" name="class_num"
 									placeholder="クラス番号を入力してください" type="text" required />
 							</c:otherwise>
 						</c:choose>
