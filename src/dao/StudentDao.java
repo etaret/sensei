@@ -205,7 +205,7 @@ public class StudentDao extends Dao{
 		PreparedStatement statement = null;
 		ResultSet rSet = null;
 		String condition = " and class_num = ?";
-		String order = " order by ent_year asc, name";
+		String order = " order by ent_year asc";
 		String conditionIsAttend = "";
 		if (isAttend) {
 		    conditionIsAttend = " and is_attend=true";
