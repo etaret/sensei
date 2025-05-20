@@ -10,12 +10,10 @@
         <section class="m-4">
             <div class="text-container" style="position: relative; display: inline-block; width: 100%;">
                 <h2 class="h3 mb-3 fw-norma py-2 px-4" style="position: relative; z-index: 1; background-color: #fff; display: inline-block; margin-left: 20px;">
-                    ${type} 結果
+                    ${type}
                 </h2>
                 <div style="background-image: linear-gradient(to right, #000000, #FFFFFF); height: 2px; position: absolute; bottom: 9px; left: 0; right: 0; z-index: 0;"></div>
             </div>
-
-            <div class="mb-3">処理結果一覧</div>
 
             <table class="table table-bordered">
                 <thead>

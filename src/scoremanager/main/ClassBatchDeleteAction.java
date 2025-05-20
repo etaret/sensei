@@ -39,9 +39,21 @@ public class ClassBatchDeleteAction extends Action {
                     classNum.setMessage("在籍している生徒を移したのち削除してください。");
                     classNum.setSuccess(false);
                 } else {
+                    // 退学者削除
+                    boolean sdeci = cNumDao.student_delete(classNum);
+                    // クラス削除
                     boolean success = cNumDao.delete(classNum);
+
                     classNum.setSuccess(success);
-                    classNum.setMessage(success ? "削除に成功しました。" : "削除に失敗しました。");
+                    if (sdeci && success) {
+                        classNum.setMessage("削除が完了しました。このクラスの退学者も削除されました");
+                    } else if (!sdeci && success) {
+                        classNum.setMessage("クラスは削除されましたが、退学者の削除に失敗しました。");
+                    } else if (sdeci && !success) {
+                        classNum.setMessage("退学者は削除されましたが、クラスの削除に失敗しました。");
+                    } else {
+                        classNum.setMessage("削除に失敗しました。");
+                    }
                 }
 
                 resultList.add(classNum);
