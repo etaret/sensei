@@ -99,7 +99,7 @@ public class CsvUploadAction extends Action {
                     }
                     // 重複チェック、データがあるかの取得
                     Student studentReturn = studentDao.get(student.getNo());
-                    if (studentReturn == null) {
+                    if (studentReturn != null) {
                     	// エラー文の追加
                     	internalData.add("ボケナス同じ学生番号追加するな！能無し");
                     	data.add(internalData);
