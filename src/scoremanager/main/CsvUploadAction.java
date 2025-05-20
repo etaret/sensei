@@ -71,7 +71,10 @@ public class CsvUploadAction extends Action {
                 StudentDao studentDao = new StudentDao();
                 List<List<String>> data = new ArrayList<>();
                 // ヘッダー表示項目定義
-                String[] header = {"学生番号", "学生名", "結果"};
+                List<String> head = new ArrayList<>();
+                head.add("学生番号");
+                head.add("学生名");
+                head.add("結果");
                 for (String[] row : csvData) {
                     // [0] 学生番号, [1] 氏名, [2] 入学年度, [3] クラス番号, [4] 在学フラグ
                     Student student = new Student();
@@ -114,10 +117,10 @@ public class CsvUploadAction extends Action {
                     data.add(internalData);
                 }
                 req.setAttribute("type", "学生登録結果");
-                req.setAttribute("header", header);
+                req.setAttribute("head", head);
                 req.setAttribute("data", data);
                 // デバック
-                System.out.println(header);
+                System.out.println(head);
                 System.out.println(data);
             } else if (selectedType.equals("科目") && fileName.contains("subject")) {
                 SubjectDao subjectDao = new SubjectDao();
@@ -234,7 +237,8 @@ public class CsvUploadAction extends Action {
                  return;
             }
 
-            res.sendRedirect("csv_done.jsp");
+
+            req.getRequestDispatcher("csv_done.jsp").forward(req, res);
 
         } catch (NumberFormatException e) {
             e.printStackTrace();
