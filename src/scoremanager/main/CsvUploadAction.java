@@ -119,9 +119,12 @@ public class CsvUploadAction extends Action {
                 // デバック
                 System.out.println(header);
                 System.out.println(data);
-            } else if (selectedType.equals("科目")) {
+            } else if (selectedType.equals("科目") && fileName.contains("subject")) {
                 SubjectDao subjectDao = new SubjectDao();
                 List<Subject> subjects = new ArrayList<>();
+                // ヘッダー表示項目定義
+                String[] header = {"科目コード", "科目名", "結果"};
+                List<List<String>> data = new ArrayList<>();
                 // [0] 科目コード, [1] 科目名
                 for (String[] row : csvData) {
                     Subject subject = new Subject();
@@ -129,11 +132,43 @@ public class CsvUploadAction extends Action {
                     subject.setName(row[1].trim());
                     subject.setCd(row[0].trim());
                     subjects.add(subject);
-                }
-                for (Subject subject : subjects) {
-                    subjectDao.save(subject);
-                }
-            } else if (selectedType.equals("テスト")) {
+                    // 現在処理のデータを登録
+                    List<String> internalData = new ArrayList<>();
+                    internalData.add(subject.getCd());
+                	internalData.add(subject.getName());
+                    // 文字数チェック
+                    if (subject.getName().length() > 20 ||
+                    	subject.getCd().length() > 3 ||
+                    	subject.getSchool().getCd().length() > 3
+                    	) {
+                    	// エラー文の追加
+                    	internalData.add("はぁー長すぎるわ。短く");
+                    	data.add(internalData);
+                    	continue; // 次のループへ
+                    }
+                    // 重複チェック、データがあるかの取得
+                    Subject subjectReturn = subjectDao.get(subject.getCd(), currentUserSchool);
+                    if (subjectReturn != null) {
+                    	// エラー文の追加
+                    	internalData.add("ボケナス同じ科目コード追加するな！能無し");
+                    	data.add(internalData);
+                    	continue; // 次のループへ
+                    }
+                    // データ登録
+                    if (subjectDao.save(subject)) {
+                    	internalData.add("処理は正常に実行されました。");
+                    } else {
+                    	internalData.add("処理中に問題が発生しました。");
+                    }
+                        data.add(internalData);
+                    }
+                req.setAttribute("type", "科目登録結果");
+                req.setAttribute("header", header);
+                req.setAttribute("data", data);
+                // デバック
+                System.out.println(header);
+                System.out.println(data);
+            } else if (selectedType.equals("テスト") && fileName.contains("test")) {
                 TestDao testDao = new TestDao();
                 StudentDao studentDaoForTest = new StudentDao();
                 SubjectDao subjectDaoForTest = new SubjectDao();
