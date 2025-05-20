@@ -3,6 +3,7 @@ package scoremanager.main;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +47,8 @@ public class CsvUploadAction extends Action {
 
         // CSVファイルのパート取得
         Part filePart = req.getPart("csvFile");
+        // ファイル名を取得
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
         List<String[]> csvData = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(filePart.getInputStream(), "UTF-8"))) {
@@ -64,7 +67,7 @@ public class CsvUploadAction extends Action {
         }
 
         try {
-            if (selectedType.equals("学生")) {
+            if (selectedType.equals("学生") && fileName.contains("student")) {
                 StudentDao studentDao = new StudentDao();
                 List<List<String>> data = new ArrayList<>();
                 // ヘッダー表示項目定義
