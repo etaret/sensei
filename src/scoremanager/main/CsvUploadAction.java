@@ -126,7 +126,10 @@ public class CsvUploadAction extends Action {
                 SubjectDao subjectDao = new SubjectDao();
                 List<Subject> subjects = new ArrayList<>();
                 // ヘッダー表示項目定義
-                String[] header = {"科目コード", "科目名", "結果"};
+                List<String> head = new ArrayList<>();
+                head.add("科目コード");
+                head.add("科目名");
+                head.add("結果");
                 List<List<String>> data = new ArrayList<>();
                 // [0] 科目コード, [1] 科目名
                 for (String[] row : csvData) {
@@ -166,15 +169,22 @@ public class CsvUploadAction extends Action {
                         data.add(internalData);
                     }
                 req.setAttribute("type", "科目登録結果");
-                req.setAttribute("header", header);
+                req.setAttribute("head", head);
                 req.setAttribute("data", data);
                 // デバック
-                System.out.println(header);
+                System.out.println(head);
                 System.out.println(data);
             } else if (selectedType.equals("テスト") && fileName.contains("test")) {
                 TestDao testDao = new TestDao();
                 StudentDao studentDaoForTest = new StudentDao();
                 SubjectDao subjectDaoForTest = new SubjectDao();
+                // ヘッダー表示項目定義
+                List<String> head = new ArrayList<>();
+                head.add("学生番号");
+                head.add("科目コード");
+                head.add("テスト回数");
+                head.add("点数");
+                head.add("結果");
                 List<Test> tests = new ArrayList<>();
                 for (String[] row : csvData) {
                     // [0] 学生番号, [1] 科目コード, [3] テスト回数, [4] 点数, [5] クラス番号
@@ -188,13 +198,44 @@ public class CsvUploadAction extends Action {
                         System.err.println("テストデータのCSVパースエラー: 学生または科目が存在しません。学生番号:" + row[0] + ", 科目コード:" + row[1]);
                         continue;
                     }
-                    test.setStudent(student);
-                    test.setSubject(subject);
-                    test.setNo(Integer.parseInt(row[3].trim()));
-                    test.setPoint(Integer.parseInt(row[4].trim()));
-                    test.setClassNum(row[5].trim());
-                    test.setSchool(currentUserSchool);
-                    tests.add(test);
+                    // 現在処理のデータを登録
+                    List<String> internalData = new ArrayList<>();
+                    internalData.add(student.getNo());
+                    internalData.add(subject.getCd());
+                    internalData.add(row[2].trim());
+                    internalData.add(row[3].trim());
+                    // 文字数チェック
+                    if (subject.getName().length() > 20 ||
+                    	subject.getCd().length() > 3 ||
+                    	subject.getSchool().getCd().length() > 3
+                    	) {
+                    	// エラー文の追加
+                    	internalData.add("はぁー長すぎるわ。短く");
+                    	data.add(internalData);
+                    	continue; // 次のループへ
+                    }
+                    // 重複チェック、データがあるかの取得
+                    Test testReturn = testDao.get(student.getNo(), subject.getCd());
+                    if (testReturn != null) {
+                    	// エラー文の追加
+                    	internalData.add("ボケナス同じ科目コード追加するな！能無し");
+                    	data.add(internalData);
+                    	continue; // 次のループへ
+                    }
+                    // データ登録
+                    if (subjectDao.save(subject)) {
+                    	internalData.add("処理は正常に実行されました。");
+                    } else {
+                    	internalData.add("処理中に問題が発生しました。");
+                    }
+                        data.add(internalData);
+                    }
+                req.setAttribute("type", "科目登録結果");
+                req.setAttribute("head", head);
+                req.setAttribute("data", data);
+                // デバック
+                System.out.println(head);
+                System.out.println(data);
                 }
                 testDao.save(tests); // TestDaoはList<Test>を直接受け取るsaveメソッド想定
             } else if (selectedType.equals("クラス")) {
