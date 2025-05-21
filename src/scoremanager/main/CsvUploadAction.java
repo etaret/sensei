@@ -245,7 +245,7 @@ public class CsvUploadAction extends Action {
                     }
                     data.add(internalData);
                 }
-                req.setAttribute("type", "科目登録結果");
+                req.setAttribute("type", "テスト登録結果");
                 req.setAttribute("head", head);
                 req.setAttribute("data", data);
                 // デバック
@@ -264,7 +264,7 @@ public class CsvUploadAction extends Action {
                 for (ClassNum classNum : classNums) {
                     classNumDao.save(classNum);
                 }
-            } else if (selectedType.equals("先生")) {
+            } else if (selectedType.equals("先生") && fileName.contains("teacher")) {
                 TeacherDao teacherDao = new TeacherDao();
                 List<Teacher> teachers = new ArrayList<>();
                 List<List<String>> data = new ArrayList<>();
@@ -322,9 +322,17 @@ public class CsvUploadAction extends Action {
                 System.out.println(head);
                 System.out.println(data);
             } else {
-                 req.setAttribute("error", "無効な項目が選択されました。");
-                 req.getRequestDispatcher("menu.jsp").forward(req, res);
-                 return;
+                req.setAttribute("type", "無効な選択");
+                List<String> head = new ArrayList<>();
+                head.add("エラー");
+                List<List<String>> data = new ArrayList<>();
+                List<String> internalData = new ArrayList<>();
+                internalData.add("CSVのファイル名と選択した項目が一致しません。");
+                data.add(internalData);
+                req.setAttribute("head", head);
+                req.setAttribute("data", data);
+                req.getRequestDispatcher("csv_done.jsp").forward(req, res);
+                return;
             }
 
 
