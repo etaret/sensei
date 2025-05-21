@@ -251,19 +251,53 @@ public class CsvUploadAction extends Action {
                 // デバック
                 System.out.println(head);
                 System.out.println(data);
-            } else if (selectedType.equals("クラス")) {
+            // クラス登録
+            } else if (selectedType.equals("クラス") && fileName.contains("class")) {
                 ClassNumDao classNumDao = new ClassNumDao();
-                List<ClassNum> classNums = new ArrayList<>();
+                List<List<String>> data = new ArrayList<>();
+                // ヘッダー表示項目定義
+                List<String> head = new ArrayList<>();
+                head.add("クラス番号");
+                head.add("結果");
                 for (String[] row : csvData) {
                     // [0] 学校コード, [1] クラス番号
                     ClassNum classNum = new ClassNum();
                     classNum.setClass_num(row[1].trim());
                     classNum.setSchool(currentUserSchool);
-                    classNums.add(classNum);
+                    // 現在処理のデータを登録
+                    List<String> internalData = new ArrayList<>();
+                    internalData.add(classNum.getClass_num());
+                    // 文字数チェック
+                    if (classNum.getClass_num().length() > 5 ||
+                    	classNum.getSchool().getCd().length() > 5
+                    	) {
+                    	// エラー文の追加
+                    	internalData.add("はぁー長すぎるわ。短く");
+                        data.add(internalData);
+                        continue; // 次のループへ
+                    }
+                    // 重複チェック
+                    ClassNum classNumReturn = classNumDao.get(classNum.getClass_num(), currentUserSchool);
+                    if (classNumReturn != null) {
+                    	// エラー文の追加
+                    	internalData.add("ボケナス同じクラス追加するな！能無し");
+                        data.add(internalData);
+                        continue; // 次のループへ
+                    }
+                    if (classNumDao.save(classNum)) {
+                    	internalData.add("処理は正常に実行されました。");
+                    } else {
+                    	internalData.add("処理中に問題が発生しました。");
+                    }
+                    data.add(internalData);
                 }
-                for (ClassNum classNum : classNums) {
-                    classNumDao.save(classNum);
-                }
+                req.setAttribute("type", "クラス登録結果");
+                req.setAttribute("head", head);
+                req.setAttribute("data", data);
+                // デバック
+                System.out.println(head);
+                System.out.println(data);
+
             } else if (selectedType.equals("先生") && fileName.contains("teacher")) {
                 TeacherDao teacherDao = new TeacherDao();
                 List<Teacher> teachers = new ArrayList<>();
