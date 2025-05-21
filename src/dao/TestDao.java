@@ -235,5 +235,44 @@ public class TestDao extends Dao {
 
 	    return count > 0; // 更新が成功した場合はtrue
 	}
+
+	// 新規登録処理
+	public boolean save(Test test) throws Exception{
+		Connection connection = getConnection();
+		PreparedStatement statement = null;
+		// 実行件数
+		int count = 0;
+
+		try {
+			statement = connection.prepareStatement(
+					"INSERT INTO test(student_no, subject_cd, school_cd, no, point, class_num) values(?, ?, ?, ?, ?, ?)");
+			statement.setString(1, test.getStudent().getNo());
+			statement.setString(2, test.getSubject().getCd());
+			statement.setString(3, test.getSchool().getCd());
+			statement.setInt(4, test.getNo());
+			statement.setInt(5, test.getPoint());
+			statement.setString(6, test.getClassNum());
+			count = statement.executeUpdate();
+
+		} catch (Exception e) {
+			throw e;
+		}  finally {
+		    if (statement != null) {
+		        try {
+		            statement.close();
+		        } catch (SQLException sqle) {
+		            throw sqle;
+		        }
+		    }
+		    if (connection != null) {
+		        try {
+		            connection.close();
+		        } catch (SQLException sqle) {
+		            throw sqle;
+		        }
+		    }
+		}
+		return count > 0;
+	}
 }
 

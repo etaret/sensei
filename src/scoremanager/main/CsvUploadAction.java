@@ -186,28 +186,42 @@ public class CsvUploadAction extends Action {
                 head.add("テスト回数");
                 head.add("点数");
                 head.add("結果");
-                List<Test> tests = new ArrayList<>();
                 for (String[] row : csvData) {
                     // [0] 学生番号, [1] 科目コード, [3] テスト回数, [4] 点数, [5] クラス番号
                     Test test = new Test();
                     Student student = studentDaoForTest.get(row[0].trim());
                     Subject subject = null;
-                    if (currentUserSchool != null) {
-                         subject = subjectDaoForTest.get(row[1].trim(), currentUserSchool);
-                    }
-                    if (student == null || subject == null) {
-                        System.err.println("テストデータのCSVパースエラー: 学生または科目が存在しません。学生番号:" + row[0] + ", 科目コード:" + row[1]);
-                        continue;
-                    }
                     // 現在処理のデータを登録
                     List<String> internalData = new ArrayList<>();
                     internalData.add(row[0].trim());
                     internalData.add(row[1].trim());
-                    internalData.add(row[2].trim());
                     internalData.add(row[3].trim());
+                    internalData.add(row[4].trim());
+                    if (currentUserSchool != null) {
+                         subject = subjectDaoForTest.get(row[1].trim(), currentUserSchool);
+                    }
+                    if (student == null || subject == null) {
+                    	// エラー文の追加
+                    	internalData.add("テストデータのCSVパースエラー: 学生または科目が存在しません。学生番号:" + row[0] + ", 科目コード:" + row[1]);
+                    	data.add(internalData);
+                        continue;
+                    }
+
+                    test.setStudent(student);
+                    test.setClassNum(row[5].trim());
+                    test.setSubject(subject);
+                    test.setSchool(currentUserSchool);
+                    test.setNo(Integer.parseInt(row[3].trim()));
+                    test.setPoint(Integer.parseInt(row[4].trim()));
+
                     // 文字数チェック
                     if (test.getPoint() > 100 ||
-                    	test.getPoint() < 0
+                    	test.getPoint() < 0 ||
+                    	test.getStudent().getNo().length() > 10 ||
+                    	test.getSubject().getCd().length() > 3 ||
+                    	test.getSchool().getCd().length() > 10 ||
+                    	test.getNo() > 10 ||
+                    	test.getClassNum().length() > 5
                     	) {
                     	// エラー文の追加
                     	internalData.add("はぁー長すぎるわ。短く");
@@ -215,22 +229,22 @@ public class CsvUploadAction extends Action {
                     	continue; // 次のループへ
                     }
                     // 重複チェック、データがあるかの取得
-                    Test testReturn = testDao.get(student, subject, currentUserSchool, Integer.parseInt(row[2].trim()));
+                    Test testReturn = testDao.get(student, subject, currentUserSchool, Integer.parseInt(row[3].trim()));
                     if (testReturn != null) {
                     	// エラー文の追加
-                    	internalData.add("ボケナス同じ科目コード追加するな！能無し");
+                    	internalData.add("ボケナス同じデータ追加するな！能無し");
                     	data.add(internalData);
                     	continue; // 次のループへ
                     }
+
                     // データ登録
-                    if (subjectDaoForTest.save(subject)) {
+                    if (testDao.save(test)) {
                     	internalData.add("処理は正常に実行されました。");
                     } else {
                     	internalData.add("処理中に問題が発生しました。");
                     }
-                        data.add(internalData);
-                    }
-                testDao.save(tests);
+                    data.add(internalData);
+                }
                 req.setAttribute("type", "科目登録結果");
                 req.setAttribute("head", head);
                 req.setAttribute("data", data);
