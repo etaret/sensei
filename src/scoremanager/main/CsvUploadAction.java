@@ -267,6 +267,13 @@ public class CsvUploadAction extends Action {
             } else if (selectedType.equals("先生")) {
                 TeacherDao teacherDao = new TeacherDao();
                 List<Teacher> teachers = new ArrayList<>();
+                List<List<String>> data = new ArrayList<>();
+                // ヘッダー表示項目定義
+                List<String> head = new ArrayList<>();
+                head.add("教員ID");
+                head.add("名前");
+                head.add("管理権限");
+                head.add("結果");
                 for (String[] row : csvData) {
                     // [0] 教員ID, [1] パスワード, [2] 氏名, [3] 管理者フラグ
                     Teacher teacher = new Teacher();
@@ -274,17 +281,46 @@ public class CsvUploadAction extends Action {
                     teacher.setPassword(row[1].trim());
                     teacher.setName(row[2].trim());
                     teacher.setSchool(currentUserSchool);
-                    teacher.setIsAdmin(Boolean.parseBoolean(row[4].trim()));
+                    teacher.setIsAdmin(Boolean.parseBoolean(row[3].trim()));
                     teacher.setIsDeleted(false);
-                    teachers.add(teacher);
-                }
-                for (Teacher teacher : teachers) {
-                    try {
-                        teacherDao.create(teacher);
-                    } catch (Exception e) {
-                        System.err.println("先生データの保存中にエラーが発生しました: " + e.getMessage());
+                    // 現在処理のデータを登録
+                    List<String> internalData = new ArrayList<>();
+                    internalData.add(teacher.getId());
+                    internalData.add(teacher.getName());
+                    internalData.add(String.valueOf(teacher.getIsAdmin()));
+                    // 文字数チェック
+                    if (teacher.getId().length() > 10 ||
+                    	teacher.getPassword().length() > 30||
+                    	teacher.getName().length() > 10 ||
+                    	teacher.getSchool().getCd().length() > 3
+                    	) {
+                    	// エラー文の追加
+                    	internalData.add("はぁー長すぎるわ。短く");
+                        data.add(internalData);
+                        continue; // 次のループへ
                     }
+                    // 重複チェック、データがあるかの取得
+                    Teacher teacherReturn = teacherDao.get(teacher.getId());
+                    if (teacherReturn != null) {
+                    	// エラー文の追加
+                    	internalData.add("ボケナス同じ教員ID追加するな！能無し");
+                        data.add(internalData);
+                        continue; // 次のループへ
+                    }
+                    // データ登録
+                    if (teacherDao.create(teacher)) {
+                    	internalData.add("処理は正常に実行されました。");
+                    } else {
+                    	internalData.add("処理中に問題が発生しました。");
+                    }
+                    data.add(internalData);
                 }
+                req.setAttribute("type", "教員登録結果");
+                req.setAttribute("head", head);
+                req.setAttribute("data", data);
+                // デバック
+                System.out.println(head);
+                System.out.println(data);
             } else {
                  req.setAttribute("error", "無効な項目が選択されました。");
                  req.getRequestDispatcher("menu.jsp").forward(req, res);
