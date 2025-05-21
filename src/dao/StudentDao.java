@@ -309,41 +309,56 @@ public class StudentDao extends Dao{
 		return list;
 	}
 
-//	// クラスごとの学生数付き取得
-//	public List<ClassNum> class_count(School school)  throws Exception {
-//		// インスタンス初期化
-//		List<ClassNum> c_list = new ArrayList<>();
-//		Connection connection = getConnection();
-//		PreparedStatement statement = null;
-//
-//		try {
-//			statement = connection.prepareStatement("SELECT class_num.class_num, Count(student.no) AS c_count FROM class_num LEFT JOIN student "
-//													+ "ON class_num.class_num = student.class_num AND class_num.school_cd = student.school_cd "
-//													+ "WHERE class_num.school_cd=? GROUP BY class_num.class_num ORDER BY class_num.class_num");
-//			statement.setString(1,school.getCd() );
-//			ResultSet rSet = statement.executeQuery();
-//			// セット
-//			c_list = cFilter(rSet);
-//		} catch (Exception e) {
-//			throw e;
-//		} finally {
-//			 if (statement != null) {
-//	            try {
-//	                statement.close();
-//	            } catch (SQLException sqle) {
-//	                throw sqle;
-//	            }
-//	        }
-//	        if (connection != null) {
-//	            try {
-//	                connection.close();
-//	            } catch (SQLException sqle) {
-//	                throw sqle;
-//	            }
-//	        }
-//		}
-//		return c_list;
-//	}
+	// クラスごとの学生数付き取得
+	public boolean class_count(String classnum, School school)  throws Exception {
+		int count = 0;
+		// インスタンス初期化
+		Connection connection = getConnection();
+		PreparedStatement statement = null;
+		ResultSet rs = null;
+
+		try {
+			statement = connection.prepareStatement("SELECT Count(student.no) AS c_count FROM class_num LEFT JOIN student "
+													+ "ON class_num.class_num = student.class_num AND class_num.school_cd = student.school_cd "
+													+ "WHERE class_num.school_cd=? AND class_num.class_num = ? GROUP BY class_num.class_num ORDER BY class_num.class_num");
+			statement.setString(1,school.getCd() );
+			statement.setString(2, classnum);
+			rs = statement.executeQuery();
+
+			if (rs.next()) {
+	            count = rs.getInt("c_count");  // c_count を int 型で取得
+	        }
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+	        // リソースのクローズ
+	        if (rs != null) {
+	            try {
+	                rs.close();
+	            } catch (SQLException sqle) {
+	                throw sqle;
+	            }
+	        }
+	        if (statement != null) {
+	            try {
+	                statement.close();
+	            } catch (SQLException sqle) {
+	                throw sqle;
+	            }
+	        }
+	        if (connection != null) {
+	            try {
+	                connection.close();
+	            } catch (SQLException sqle) {
+	                throw sqle;
+	            }
+	        }
+	    }
+
+	    // 在籍数を返す
+	    return count > 0;
+	}
 
 	// クラスごとの学生数付き取得　在学者のみ
 	public List<ClassNum> student_count(School school)  throws Exception {

@@ -17,6 +17,8 @@ public class ClassBatchDeleteAction extends Action {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
+    	boolean sdeci = false, success = false;
+
         HttpSession session = req.getSession(false);
         Teacher teacher = (Teacher) session.getAttribute("user");
         ClassNumDao cNumDao = new ClassNumDao();
@@ -36,27 +38,41 @@ public class ClassBatchDeleteAction extends Action {
                 classNum.setC_count(cCount);
 
                 if (cCount > 0) {
-                    classNum.setMessage("在籍している生徒を移したのち削除してください。");
-                    classNum.setSuccess(false);
+                	// errorに文字セット
+                	classNum.setMessage("在籍している生徒を移したのち削除してください。");
+                	classNum.setSuccess(false);
+                // 在籍生徒がいない場合
                 } else {
-                    // 退学者削除
-                    boolean sdeci = cNumDao.student_delete(classNum);
-                    // クラス削除
-                    boolean success = cNumDao.delete(classNum);
 
-                    classNum.setSuccess(success);
-                    if (sdeci && success) {
-                        classNum.setMessage("削除が完了しました。このクラスの退学者も削除されました");
-                    } else if (!sdeci && success) {
-                        classNum.setMessage("クラスは削除されましたが、退学者の削除に失敗しました。");
-                    } else if (sdeci && !success) {
-                        classNum.setMessage("退学者は削除されましたが、クラスの削除に失敗しました。");
+                	// 退学者削除
+                    sdeci = cNumDao.student_delete(classNum);
+                    // クラス削除
+                    success = cNumDao.delete(classNum);
+
+                 // 結果判定、文字登録
+                    if (sdeci) {
+                        if (success) {
+                            classNum.setMessage("削除が完了しました。このクラスの退学者も削除されました");
+                            classNum.setSuccess(true);
+                        } else {
+                        	classNum.setMessage("削除に失敗しました。内容確認の上もう一度お願いします。");
+                            classNum.setSuccess(false);
+                        }
                     } else {
-                        classNum.setMessage("削除に失敗しました。");
+                    	if (success) {
+                    		classNum.setMessage("削除が完了しました。");
+                            classNum.setSuccess(true);
+                        } else {
+                        	classNum.setMessage("削除に失敗しました。内容確認の上もう一度お願いします。");
+                            classNum.setSuccess(false);
+                        }
                     }
                 }
 
                 resultList.add(classNum);
+
+             // 在籍生徒がいる場合
+
             }
         } else {
             // チェックされていない場合

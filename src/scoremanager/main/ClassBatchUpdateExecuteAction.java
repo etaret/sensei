@@ -11,6 +11,7 @@ import bean.ClassNum;
 import bean.School;
 import bean.Teacher;
 import dao.ClassNumDao;
+import dao.StudentDao;
 import tool.Action;
 
 public class ClassBatchUpdateExecuteAction extends Action {
@@ -22,6 +23,7 @@ public class ClassBatchUpdateExecuteAction extends Action {
         Teacher teacher = (Teacher) session.getAttribute("user");
         School school = teacher.getSchool();
         ClassNumDao cNumDao = new ClassNumDao();
+        StudentDao s_dao = new StudentDao();
 
         // 件数をカウント
         int count = 0;
@@ -54,7 +56,7 @@ public class ClassBatchUpdateExecuteAction extends Action {
                     message = "変更はありませんでした。";
                     success = true;
                 } else {
-                    if (cCount > 0) {
+                    if (s_dao.class_count(oldClassNum, teacher.getSchool())) {
                         success = cNumDao.update(result);
                     } else {
                         success = cNumDao.r_update(result);

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import bean.ClassNum;
 import bean.Teacher;
 import dao.ClassNumDao;
+import dao.StudentDao;
 import tool.Action;
 
 public class ClassUpdateExecuteAction extends Action {
@@ -26,6 +27,7 @@ public class ClassUpdateExecuteAction extends Action {
 		ClassNum cNum = new ClassNum();
 		ClassNumDao cNumDao = new ClassNumDao();
 		ClassNum class_cd = null;
+		StudentDao s_dao = new StudentDao();
 
 		// 値取得
 		class_num = req.getParameter("class_num");
@@ -63,7 +65,7 @@ public class ClassUpdateExecuteAction extends Action {
 	    } else {
 	        // `messege` が null の場合
 	        // 学生がいる場合
-	        if (c_count > 0) {
+	        if (s_dao.class_count(old_class_num, teacher.getSchool())) {
 	            cNum.setClass_num(class_num);
 	            cNum.setSchool(teacher.getSchool());
 	            cNum.setOld_class_num(old_class_num);
