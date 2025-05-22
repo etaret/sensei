@@ -126,7 +126,7 @@ public class TestDao extends Dao {
 	    		  + "AND test.subject_cd = ? "
 	    		  + "AND test.no = ? "
 	    		  + "AND test.school_cd = ? "
-	    		  + "WHERE student.ent_year = ? AND student.class_num = ? "
+	    		  + "WHERE student.ent_year = ? AND student.class_num = ? AND student.is_attend = TRUE "
 	    		  + "GROUP BY student.ent_year, student.class_num, student.no, student.name, test.subject_cd, test.school_cd;"
 	    		);
 			statement.setString(1, subject.getCd());
